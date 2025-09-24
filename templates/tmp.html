@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>backtest result panel</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .content-row {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        #side-panel {
+            width: 320px;
+            background: #f8f9fa;
+            border-right: 1px solid #ddd;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #main-content {
+            flex: 1;
+            min-width: 0;
+            height: 70%;
+        }
+
+        #dataframe-table {
+            height: 30%;
+            overflow-y: auto;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .panel-header {
+            padding: 10px;
+            background: #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .panel-content {
+            padding: 5px;
+        }
+
+        #toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #panel-tab {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 80px;
+            background: #1890ff;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            border: 1px solid #096dd9;
+            border-left: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+
+        #panel-tab-min {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 80px;
+            background: #1890ff;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            border: 1px solid #096dd9;
+            border-right: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* DataFrame表格样式 */
+        #dataframe-table {
+            width: 100%;
+            padding: 20px;
+        }
+
+        #dataframe-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #dataframe-table th,
+        #dataframe-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #dataframe-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        #dataframe-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #dataframe-table tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content-row">
+            <div id="side-panel">
+                <div class="panel-header">
+                    <h3 style="margin: 0;">backtest result</h3>
+                    <button id="toggle-btn">&lt;&lt;&lt;</button>
+                </div>
+                <div class="panel-content">
+                    <div id="stats-display"
+                        style="white-space: pre-wrap; font-family: monospace; font-size: 12px; line-height: 1.2;">
+                        <pre style="margin: 0;">{{ stats_data|safe }}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="main-area">
+                <div id="main-content">
+                    <iframe src="{{ html_path }}"></iframe>
+                </div>
+                <!-- DataFrame表格 -->
+                <div id="dataframe-table">
+                    <h3>DataFrame Data</h3>
+                    <div id="table-container">
+                        <pre style="margin: 0;">{{ trade_data|safe }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="panel-tab">
+            <span style="writing-mode: vertical-rl;">expand</span>
+        </div>
+
+        <script>
+            const sidePanel = document.getElementById('side-panel');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const panelTab = document.getElementById('panel-tab');
+            const container = document.querySelector('.container');
+
+            // 初始状态
+            let isCollapsed = false;
+
+            // 切换面板状态
+            function togglePanel() {
+                isCollapsed = !isCollapsed;
+                if (isCollapsed) {
+                    sidePanel.style.width = '0';
+                    sidePanel.style.borderRight = 'none';
+                    panelTab.style.display = 'flex';
+                } else {
+                    sidePanel.style.width = '320px';
+                    sidePanel.style.borderRight = '1px solid #ddd';
+                    panelTab.style.display = 'none';
+                }
+            }
+
+            // 按钮事件
+            toggleBtn.addEventListener('click', togglePanel);
+            panelTab.addEventListener('click', togglePanel);
+
+        </script>
+</body>
+
+</html>

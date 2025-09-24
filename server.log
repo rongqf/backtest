@@ -1,0 +1,80 @@
+INFO:     Will watch for changes in these directories: ['/home/clive/rongqf/backtest']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [3898877] using StatReload
+Process SpawnProcess-1:
+Traceback (most recent call last):
+  File "/home/clive/miniconda3/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/home/clive/miniconda3/lib/python3.13/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+    ~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+    ~~~~~~~~~~~^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/home/clive/miniconda3/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/clive/rongqf/backtest/server.py", line 7, in <module>
+    from core.backtest_engine import StrategyRunner
+  File "/home/clive/rongqf/backtest/core/backtest_engine.py", line 5, in <module>
+    import core.backtesting_runer as bti_runer
+  File "/home/clive/rongqf/backtest/core/backtesting_runer.py", line 12, in <module>
+    from backtesting import Backtest
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/backtesting/__init__.py", line 68, in <module>
+    from . import lib  # noqa: F401
+    ^^^^^^^^^^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/backtesting/lib.py", line 26, in <module>
+    from ._plotting import plot_heatmaps as _plot_heatmaps
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/backtesting/_plotting.py", line 21, in <module>
+    from bokeh.plotting import figure as _figure
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/plotting/__init__.py", line 20, in <module>
+    from . import figure as _figure ; _figure
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/plotting/figure.py", line 20, in <module>
+    from ..core.properties import (
+    ...<12 lines>...
+    )
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/properties.py", line 270, in <module>
+    from .property.auto import Auto; Auto
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/property/auto.py", line 22, in <module>
+    from .enum import Enum
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/property/enum.py", line 24, in <module>
+    from .primitive import String
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/property/primitive.py", line 34, in <module>
+    bokeh_bool_types += (np.bool8,)
+                         ^^^^^^^^
+  File "/home/clive/miniconda3/lib/python3.13/site-packages/numpy/__init__.py", line 414, in __getattr__
+    raise AttributeError("module {!r} has no attribute "
+                         "{!r}".format(__name__, attr))
+AttributeError: module 'numpy' has no attribute 'bool8'. Did you mean: 'bool'?
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'FontAwesome', 'Georgia', 'Impact', 'Lato', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10', 'dsrom10', 'esint10', 'eufm10', 'msam10', 'msbm10', 'rsfs10', 'stmary10', 'wasy10']

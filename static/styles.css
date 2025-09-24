@@ -1,0 +1,47 @@
+body {
+    font-family: 'Microsoft YaHei', sans-serif;
+    padding: 20px;
+}
+
+#strategy-sidebar {
+    background-color: #f8f9fa;
+    height: 100vh;
+    padding: 20px;
+    border-right: 1px solid #dee2e6;
+}
+
+#strategy-list {
+    margin-top: 15px;
+}
+
+.strategy-item {
+    padding: 10px;
+    margin-bottom: 5px;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+}
+
+.strategy-item:hover {
+    background-color: #e9ecef;
+}
+
+#parameter-editor {
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.param-group {
+    margin-bottom: 15px;
+}
+
+#backtest-results {
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

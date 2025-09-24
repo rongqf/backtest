@@ -1,0 +1,13 @@
+{
+    "strategy": "covered_call",
+    "parameters": {
+        "cash": "500000",
+        "commission": "0.002",
+        "begin_time": "2025-04-01",
+        "end_time": "2025-09-25",
+        "code": "300etf"
+    },
+    "stats": "{}",
+    "timestamp": "2025-09-24T02:24:34.486132",
+    "result_id": "covered_call_20250924_022434"
+}
