@@ -1,0 +1,66 @@
+*.pyc
+*~
+*site_settings.py
+hypercorn_config.toml
+*.py_dev
+.devcontainer
+profile.html
+analysis_data/*
+
+# Python Ignore
+*.log
+*.pyc
+*.zip
+*.rar
+*.via
+*.tmp
+*.err
+*.swp
+.~lock*
+.DS_Store
+.svn
+env
+venv_*
+venv
+*.log
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+var
+upload
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+
+# Others
+*.sqlite3
+
+.vscode/
+*.pyc

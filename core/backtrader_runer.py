@@ -17,6 +17,11 @@ import pyfolio as pf
 import quantstats as qs
 
 
+
+def get_quote_data(**params):
+    return pd.DataFrame([])
+
+
 def run_backtest(strategy_name: str, StrategyClass, module, **params):
     """执行回测并保存结果"""
 
@@ -27,12 +32,17 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     cerebro.broker.set_cash(500000)
     cerebro.broker.setcommission(commission=0.002)
 
-    DataFeed = getattr(module, 'DataFeed')
-    datafeed = DataFeed()
-    params_ = datafeed.get_strategy_params()
-    # 添加自己编写的策略，opts是第1小节“策略所需数据”中提到的期权合约信息
-    cerebro.addstrategy(StrategyClass, **params_)
-    datafeed.add_data_to_engine(cerebro)
+    DataFeed = getattr(module, 'DataFeed', None)
+    if DataFeed:
+        datafeed = DataFeed()
+        params_ = datafeed.get_strategy_params()
+        # 添加自己编写的策略，opts是第1小节“策略所需数据”中提到的期权合约信息
+        cerebro.addstrategy(StrategyClass, **params_)
+        datafeed.add_data_to_engine(cerebro)
+    else:
+        code, pddata = get_quote_data(**params)
+        data = PandasData(dataname=pddata, datetime='date')
+        cerebro.adddata(data, name=code) 
         
     # 在执行策略之前添加分析器，我添加了3个，分别是：收益，回撤和夏普比率
     cerebro.addanalyzer(bt.analyzers.Returns, _name='treturn')

