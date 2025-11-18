@@ -6,8 +6,18 @@ from pydantic import BaseModel
 from typing import Optional
 from core.backtest_engine import StrategyRunner
 import os, json
+from fastapi.middleware.cors import CORSMiddleware 
 
 app = FastAPI()
+# 配置并添加 CORS 中间件
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 允许所有来源的请求
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许所有 HTTP 方法（GET, POST 等）
+    allow_headers=["*"],  # 允许所有 HTTP 头
+)
+
 runner = StrategyRunner()
 
 # 挂载静态文件
@@ -63,3 +73,11 @@ async def get_strategy_params(strategy_name: str):
         if strategy['name'] == strategy_name:
             return {"params": strategy['params']}
     raise HTTPException(status_code=404, detail="Strategy not found")
+
+
+
+
+@app.get("/api/auth")
+async def auth(phone, code):
+    """获取可用策略列表"""
+    return {'ok': True, 'data': {'phone': phone, 'code': code}}
