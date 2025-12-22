@@ -2,7 +2,6 @@ import importlib
 import os
 import json
 
-import core.backtesting_runer as bti_runer
 import core.backtrader_runer as bt_runer
 
 def snake_to_camel(s: str) -> str:
@@ -67,6 +66,7 @@ class StrategyRunner:
         StrategyClass, module = self.load_strategy(strategy_name)
         bteng = getattr(module, 'backengine') or ''
         if bteng == 'backtesting':
+            import core.backtesting_runer as bti_runer
             return bti_runer.run_backtest(strategy_name, StrategyClass, module, **params)
         else:
             return bt_runer.run_backtest(strategy_name, StrategyClass, module, **params)
@@ -176,7 +176,7 @@ class StrategyRunner:
     def get_strategies(self):
         strategies = []
         for file in os.listdir(self.strategies_dir):
-            if file.endswith(".py"):
+            if file.endswith(".py") and file.find('xxx') < 0:
                 strategy_name = file[:-3]
                 params = self.get_strategy_params(strategy_name)
                 strategies.append({

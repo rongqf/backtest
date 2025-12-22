@@ -11,12 +11,18 @@ print("可用字体:", fonts)
 
 
 import pandas as pd
+import numpy as np
 import backtrader as bt
 from backtrader.feeds import PandasData
 import pyfolio as pf
 import quantstats as qs
 
 
+if not hasattr(np, 'bool8'):
+    np.bool8 = np.bool_
+
+from backtrader_plotting import Bokeh
+from backtrader_plotting.schemes import Tradimo
 
 def get_quote_data(**params):
     return pd.DataFrame([])
@@ -29,12 +35,14 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     cerebro = bt.Cerebro()
 
     # 设置交易资金和交易费用
-    cerebro.broker.set_cash(500000)
-    cerebro.broker.setcommission(commission=0.002)
+    cash = float(params.get('cash', 500000))
+    commission = float(params.get('commission', 0.002))
+    cerebro.broker.set_cash(cash)
+    cerebro.broker.setcommission(commission=commission)
 
     DataFeed = getattr(module, 'DataFeed', None)
     if DataFeed:
-        datafeed = DataFeed()
+        datafeed = DataFeed(params)
         params_ = datafeed.get_strategy_params()
         # 添加自己编写的策略，opts是第1小节“策略所需数据”中提到的期权合约信息
         cerebro.addstrategy(StrategyClass, **params_)
@@ -53,13 +61,8 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     # 执行回测
     thestrats = cerebro.run()
 
-    # 设置回测结果中不显示期权K线
-    for d in cerebro.datas:
-        d.plotinfo.plot = False
-        
-    # 显示策略运行结果
-    #cerebro.plot(iplot=False)
-
+    
+    
     print(thestrats)
     # 获取分析结果
     thestrat = thestrats[0]
@@ -88,6 +91,26 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     json_path = f"results/{strategy_name}/{result_id}.json"
     with open(json_path, "w") as f:
         json.dump(result_data, f, indent=4)
+        
+        # 生成HTML报告
+    html_path = f"results/{strategy_name}/{result_id}_report.html"
+    scheme=Tradimo()
+    scheme.volup = 'red',
+    scheme.voldown = 'red'
+    # 配置 Bokeh 绘图器并保存
+    b = Bokeh(
+        # style='candle',        # 主图样式，例如 'candle' 为K线图
+        plot_mode='single',    # 绘图模式，'single' 将所有内容放在一个标签页
+        scheme=scheme,      # 使用 Tradimo 浅色主题
+        filename=html_path,  # 指定输出的HTML文件名
+        output_mode='save',     # 模式设为 'save' 表示保存文件
+        #voloverlay=False,
+        # plotconfig=plotconfig,
+        volup='red',       # 上涨日的成交量设置为红色
+        voldown='red'    # 下跌日的成交量设置为绿色
+    )
+    cerebro.plot(b)
+    
      
     pf_rp_path = f"results/{strategy_name}/{result_id}_pf_report.html"
     qs.reports.html(returns, title='portfolio report', output=pf_rp_path)
@@ -96,5 +119,5 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
         "status": "success",
         "result_id": result_id,
         "json_path": json_path,
-        "html_path": ''
+        "html_path": html_path,
     }

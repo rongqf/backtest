@@ -64,3 +64,5 @@ nosetests.xml
 
 .vscode/
 *.pyc
+
+results/
