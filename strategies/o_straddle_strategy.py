@@ -30,12 +30,12 @@ paramecfg = {
         'default': 0.002
     },
     'begin_time': {
-        'type': str,
-        'default': '2025-01-01'
+        'type': dt.datetime,
+        'default': dt.datetime.strptime('2025-01-01 16:00:00', '%Y-%m-%d %H:%M:%S')
     },
     'end_time': {
-        'type': str,
-        'default': '2025-01-02'
+        'type': dt.datetime,
+        'default': dt.datetime.strptime('2025-01-02 16:00:00', '%Y-%m-%d %H:%M:%S')
     },
 }
 

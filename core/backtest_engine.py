@@ -1,7 +1,7 @@
 import importlib
 import os
 import json
-
+import datetime
 import core.backtrader_runer as bt_runer
 
 def snake_to_camel(s: str) -> str:
@@ -20,8 +20,16 @@ def pydantic_to_html_form(model: dict) -> str:
         input_type = {
             "str": "text",
             "int": "number",
+            "float": "number",
             "date": "date",
-            "bool": "checkbox"
+            "bool": "checkbox",
+            "datetime": 'datetime-local',
+            int: "number",
+            float: "number",
+            bool: "checkbox",
+            datetime.date : "date",
+            datetime.datetime: 'datetime-local',
+            
         }.get(field.get('type', 'str'), "text")
         
         # 获取默认值
@@ -31,8 +39,6 @@ def pydantic_to_html_form(model: dict) -> str:
         node.append(f'<label>{title}</label>')
         node.append(f'<input type="{input_type}" name="{name}" value="{default_value}">')
         html.append(" ".join(node))
-    
-
     return "<br><br>".join(html)
 
 class StrategyRunner:
