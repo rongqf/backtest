@@ -23,7 +23,7 @@ backengine = 'backtrader'
 paramecfg = {
     'cash': {
         'type': int,
-        'default': 500000
+        'default': 1_000_000
     },
     'commission': {
         'type': float,
@@ -297,6 +297,8 @@ class DataFeed:
 select {cols} from crypto_options_5m 
 where datetime >= '{start_utc_slice}' 
 and datetime <= '{end_utc_slice}' 
+and exchange = 'binance'
+and underlyer = 'BTC_usd'
         """
         df = pd.read_sql(sql, engine)
         df['expiration_date'] = df['expiration_date'].map(lambda x: x.isoformat())

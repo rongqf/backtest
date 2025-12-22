@@ -81,3 +81,8 @@ async def get_strategy_params(strategy_name: str):
 async def auth(phone, code):
     """获取可用策略列表"""
     return {'ok': True, 'data': {'phone': phone, 'code': code}}
+
+
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True, workers=1)
