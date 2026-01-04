@@ -194,9 +194,16 @@ class StrategyRunner:
     def get_strategy_params(self, strategy_name: str):
         m = f"{self.strategies_dir}.{strategy_name}"
         module = importlib.import_module(m)
-        params = getattr(module, 'paramecfg')
-        html = pydantic_to_html_form(params)
-        return html
+        params = getattr(module, 'parametmp', None)
+        if params:
+            if callable(params):
+                params = params()
+            print(params)
+            return params
+        else:
+            params = getattr(module, 'paramecfg')
+            html = pydantic_to_html_form(params)
+            return html
 
         
 if __name__ == "__main__":

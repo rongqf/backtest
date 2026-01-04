@@ -1,0 +1,170 @@
+<div class="form-container">
+    <form id="paramForm">
+        <!-- 现金输入 -->
+        <div class="form-group">
+            <label for="cash">cash:</label>
+            <input type="number" id="cash" name="cash" value="1000000" step="1000" required>
+        </div>
+
+        <!-- 佣金比例输入 -->
+        <div class="form-group">
+            <label for="commission">commission:</label>
+            <input type="number" id="commission" name="commission" value="0.002" step="0.001" min="0" max="1" required>
+        </div>
+
+        <!-- 开始时间输入 -->
+        <div class="form-group">
+            <label for="begin_time">begin_time:</label>
+            <input type="datetime-local" id="begin_time" name="begin_time" value="2025-01-01T16:00" required>
+        </div>
+
+        <!-- 结束时间输入 -->
+        <div class="form-group">
+            <label for="end_time">end_time:</label>
+            <input type="datetime-local" id="end_time" name="end_time" value="2025-01-02T16:00" required>
+        </div>
+
+        <!-- 计划表动态部分 -->
+        <div class="form-group">
+            <label>schedule:</label>
+            <div id="scheduleContainer">
+                <!-- 默认的计划项 -->
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="16:05" required>
+                    <input type="number" name="schedule_weight[]" value="0.333" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="20:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="00:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="04:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="08:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="12:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.333" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addScheduleItem()">add item</button>
+        </div>
+
+        <!-- <button type="submit" class="btn">提交配置</button> -->
+    </form>
+</div>
+
+<script>
+    // 添加新的计划项
+    function addScheduleItem() {
+        const container = document.getElementById('scheduleContainer');
+        const newItem = document.createElement('div');
+        newItem.className = 'schedule-item';
+        newItem.innerHTML = `
+			<input type="time" name="schedule_time[]" value="00:00" required>
+			<input type="number" name="schedule_weight[]" value="0.1" step="0.001" min="0" max="1" required>
+			<button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+		`;
+        container.appendChild(newItem);
+    }
+
+    // 删除计划项
+    function removeScheduleItem(button) {
+        const container = document.getElementById('scheduleContainer');
+        if (container.children.length > 1) {
+            button.parentElement.remove();
+        } else {
+            alert('At least one schedule item must be kept');
+        }
+    }
+
+    // 表单提交处理
+    document.getElementById('paramForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // 收集表单数据
+        const formData = new FormData(this);
+        const scheduleData = [];
+
+        // 处理计划表数据
+        const times = formData.getAll('schedule_time[]');
+        const weights = formData.getAll('schedule_weight[]');
+
+        for (let i = 0; i < times.length; i++) {
+            scheduleData.push([times[i], parseFloat(weights[i])]);
+        }
+
+        // 验证所有 weights 的总和必须为 1
+        const totalWeight = scheduleData.reduce((sum, item) => sum + item[1], 0);
+        const tolerance = 0.001;  // 容差，处理浮点数精度问题
+        if (Math.abs(totalWeight - 1) > tolerance) {
+            alert(`Weights must sum to 1. Current sum: ${totalWeight.toFixed(3)}`);
+            return null;
+        }
+
+        // 构建最终数据对象
+        const paramConfig = {
+            cash: parseInt(formData.get('cash')),
+            commission: parseFloat(formData.get('commission')),
+            begin_time: formData.get('begin_time'),
+            end_time: formData.get('end_time'),
+            schedule: scheduleData
+        };
+
+        document.getElementById('paramForm').dispatchEvent(new CustomEvent('params-form', {
+            detail: paramConfig,
+            bubbles: true  // 让事件冒泡到 document
+        }));
+    });
+
+
+    // 表单提交处理
+    function get_from_data() {
+        // 获取表单元素
+        const formElement = document.getElementById('paramForm');
+        // 收集表单数据
+        const formData = new FormData(formElement);
+        const scheduleData = [];
+
+        // 处理计划表数据
+        const times = formData.getAll('schedule_time[]');
+        const weights = formData.getAll('schedule_weight[]');
+
+        for (let i = 0; i < times.length; i++) {
+            scheduleData.push([times[i], parseFloat(weights[i])]);
+        }
+
+        // 验证所有 weights 的总和必须为 1
+        const totalWeight = scheduleData.reduce((sum, item) => sum + item[1], 0);
+        const tolerance = 0.001;  // 容差，处理浮点数精度问题
+        if (Math.abs(totalWeight - 1) > tolerance) {
+            alert(`Weights must sum to 1. Current sum: ${totalWeight.toFixed(3)}`);
+            return null;
+        }
+
+        // 构建最终数据对象
+        const paramConfig = {
+            cash: parseInt(formData.get('cash')),
+            commission: parseFloat(formData.get('commission')),
+            begin_time: formData.get('begin_time'),
+            end_time: formData.get('end_time'),
+            schedule: scheduleData
+        };
+
+        return paramConfig;
+    }
+
+</script>

@@ -124,6 +124,18 @@
                 ${data.params}
             `;
 
+            formEl.querySelectorAll('script').forEach(oldScript => {
+                const newScript = document.createElement('script');
+                newScript.textContent = oldScript.textContent;
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+
+            // 监听自定义元素触发的事件
+            document.addEventListener('params-form', (event) => {
+                console.log('Form data received:', event.detail);
+                //alert(`Data received: ${JSON.stringify(event.detail)}`);
+            });
+
             // 设置当前策略
             window.currentStrategy = strategyName;
         }
@@ -168,19 +180,30 @@
                 return;
             }
 
-            // 动态获取表单参数
-            const formEl = document.getElementById('params-form');
-            const inputs = formEl.querySelectorAll('input');
-            const params = {};
-            inputs.forEach(input => {
-                if (input.type === 'number') {
-                    params[input.name] = parseInt(input.value);
-                } else if (input.type === 'checkbox') {
-                    params[input.name] = input.checked;
-                } else {
-                    params[input.name] = input.value;
+            // Check if get_from_data function exists and use it if available
+            let params;
+            if (typeof get_from_data === 'function') {
+                params = get_from_data();
+                if (params === null) {
+                    return;  // 验证失败，停止执行
                 }
-            });
+                console.log('params from get_from_data:', params);
+            } else {
+                // Fallback to original logic
+                const formEl = document.getElementById('params-form');
+                const inputs = formEl.querySelectorAll('input');
+                params = {};
+                inputs.forEach(input => {
+                    if (input.type === 'number') {
+                        params[input.name] = parseInt(input.value);
+                    } else if (input.type === 'checkbox') {
+                        params[input.name] = input.checked;
+                    } else {
+                        params[input.name] = input.value;
+                    }
+                });
+                console.log('params from fallback:', params);
+            }
 
             console.log('params', params);
 

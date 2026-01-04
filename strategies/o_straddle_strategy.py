@@ -9,6 +9,7 @@ import os, sys
 import math
 import pytz
 import datetime as dt
+from pydantic import BaseModel, Field
 
 try:
     from utils.data_feed_utils import  engine
@@ -17,7 +18,12 @@ except Exception as e:
     from utils.data_feed_utils import  engine
 
 
-
+class param(BaseModel):
+    cash: int = Field(default=1_000_000)
+    commission: float = Field(default=0.002)
+    begin_time: dt.datetime = Field(default=dt.datetime.strptime('2025-01-01 16:00:00', '%Y-%m-%d %H:%M:%S'))
+    end_time: dt.datetime = Field(default=dt.datetime.strptime('2025-01-02 16:00:00', '%Y-%m-%d %H:%M:%S'))
+    arr: list[int]
 
 backengine = 'backtrader'
 paramecfg = {
@@ -37,9 +43,21 @@ paramecfg = {
         'type': dt.datetime,
         'default': dt.datetime.strptime('2025-01-02 16:00:00', '%Y-%m-%d %H:%M:%S')
     },
+    'schedule' : [
+        (dt.time(16, 5), 1/3), (dt.time(20, 0), 1/12), (dt.time(0, 0), 1/12),
+        (dt.time(4, 0), 1/12), (dt.time(8, 0), 1/12), (dt.time(12, 0), 1/3)
+    ]
 }
 
-
+def parametmp():
+    current_file = os.path.abspath(__file__)
+    base_name = os.path.splitext(current_file)[0]
+    html_file = f"{base_name}.html"
+    
+    if os.path.exists(html_file):
+        with open(html_file, 'r', encoding='utf-8') as f:
+            return f.read()
+    return None
 
 
 
@@ -136,7 +154,9 @@ class OStraddleStrategy(bt.Strategy):
     def __init__(self):
         self.df = self.p.df_market
         self.spot = self.datas[0]
-        self.schedule = SCHEDULE
+        self.schedule = self.p.schedule or SCHEDULE
+        
+        print(self.schedule)
         
         print(self.df.head().to_dict('records'))
         
@@ -276,12 +296,22 @@ class DataFeed:
         self.code = ''
         self.begin_time = pd.to_datetime(paramecfg.get('begin_time', '2025-01-01 00:00:00'))
         self.end_time = pd.to_datetime(paramecfg.get('end_time', '2025-01-02 00:00:00'))
+        sch = paramecfg.get('schedule')
+        for x in sch:
+            dummy_date_time_str = f"1900-01-01 {x[0]}"
+            datetime_format = "%Y-%m-%d %H:%M"
+            datetime_object = dt.datetime.strptime(dummy_date_time_str, datetime_format)
+            time_object = datetime_object.time()
+            x[0] = time_object
+        print(sch)
+        self.schedule = sch
 
         self.get_date_db()
 
     def get_strategy_params(self):
         return {
-            'df_market': self.df
+            'df_market': self.df,
+            'schedule': self.schedule,
         }
 
     def get_date_db(self):
@@ -354,7 +384,18 @@ if __name__ == "__main__":
     cerebro.broker.set_cash(INITIAL_CAPITAL)
     # cerebro.broker.setcommission(commission=0.002)
 
-    datafeed = DataFeed({'begin_time': '2025-01-13 16:05:00', 'end_time': '2025-01-14 16:00:00'})
+    datafeed = DataFeed({
+        'begin_time': '2025-01-13 16:05:00', 
+        'end_time': '2025-01-14 16:00:00',
+        'schedule': [
+            ['16:05', 0.333], 
+            ['20:00', 0.083], 
+            ['00:00', 0.083], 
+            ['04:00', 0.083], 
+            ['08:00', 0.083], 
+            ['12:00', 0.333]
+        ]
+    })
     params = datafeed.get_strategy_params()
     # 添加自己编写的策略，opts是第1小节“策略所需数据”中提到的期权合约信息
     cerebro.addstrategy(OStraddleStrategy, **params)
