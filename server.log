@@ -1,8 +1,967 @@
 INFO:     Will watch for changes in these directories: ['/home/clive/rongqf/backtest']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [842999] using StatReload
+INFO:     Started reloader process [2020664] using StatReload
 /home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
   warnings.warn(
-INFO:     Started server process [843001]
+INFO:     Started server process [2020666]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'Georgia', 'Impact', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10']
+INFO:     103.117.77.79:56623 - "GET / HTTP/1.1" 200 OK
+INFO:     103.117.77.79:56623 - "GET /static/bootstrap.min.css HTTP/1.1" 200 OK
+<div class="form-container">
+    <form id="paramForm">
+        <!-- 现金输入 -->
+        <div class="form-group">
+            <label for="cash">cash:</label>
+            <input type="number" id="cash" name="cash" value="1000000" step="1000" required>
+        </div>
+
+        <!-- 佣金比例输入 -->
+        <div class="form-group">
+            <label for="commission">commission:</label>
+            <input type="number" id="commission" name="commission" value="0.002" step="0.001" min="0" max="1" required>
+        </div>
+
+        <!-- 开始时间输入 -->
+        <div class="form-group">
+            <label for="begin_time">begin_time:</label>
+            <input type="datetime-local" id="begin_time" name="begin_time" value="2025-01-01T16:00" required>
+        </div>
+
+        <!-- 结束时间输入 -->
+        <div class="form-group">
+            <label for="end_time">end_time:</label>
+            <input type="datetime-local" id="end_time" name="end_time" value="2025-01-02T16:00" required>
+        </div>
+
+        <!-- 计划表动态部分 -->
+        <div class="form-group">
+            <label>schedule:</label>
+            <div id="scheduleContainer">
+                <!-- 默认的计划项 -->
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="16:05" required>
+                    <input type="number" name="schedule_weight[]" value="0.333" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="20:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="00:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="04:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="08:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="12:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.333" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addScheduleItem()">add item</button>
+        </div>
+
+        <!-- <button type="submit" class="btn">提交配置</button> -->
+    </form>
+</div>
+
+<script>
+    // 添加新的计划项
+    function addScheduleItem() {
+        const container = document.getElementById('scheduleContainer');
+        const newItem = document.createElement('div');
+        newItem.className = 'schedule-item';
+        newItem.innerHTML = `
+			<input type="time" name="schedule_time[]" value="00:00" required>
+			<input type="number" name="schedule_weight[]" value="0.1" step="0.001" min="0" max="1" required>
+			<button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+		`;
+        container.appendChild(newItem);
+    }
+
+    // 删除计划项
+    function removeScheduleItem(button) {
+        const container = document.getElementById('scheduleContainer');
+        if (container.children.length > 1) {
+            button.parentElement.remove();
+        } else {
+            alert('At least one schedule item must be kept');
+        }
+    }
+
+    // 表单提交处理
+    document.getElementById('paramForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // 收集表单数据
+        const formData = new FormData(this);
+        const scheduleData = [];
+
+        // 处理计划表数据
+        const times = formData.getAll('schedule_time[]');
+        const weights = formData.getAll('schedule_weight[]');
+
+        for (let i = 0; i < times.length; i++) {
+            scheduleData.push([times[i], parseFloat(weights[i])]);
+        }
+
+        // 验证所有 weights 的总和必须为 1
+        const totalWeight = scheduleData.reduce((sum, item) => sum + item[1], 0);
+        const tolerance = 0.001;  // 容差，处理浮点数精度问题
+        if (Math.abs(totalWeight - 1) > tolerance) {
+            alert(`Weights must sum to 1. Current sum: ${totalWeight.toFixed(3)}`);
+            return null;
+        }
+
+        // 构建最终数据对象
+        const paramConfig = {
+            cash: parseInt(formData.get('cash')),
+            commission: parseFloat(formData.get('commission')),
+            begin_time: formData.get('begin_time'),
+            end_time: formData.get('end_time'),
+            schedule: scheduleData
+        };
+
+        document.getElementById('paramForm').dispatchEvent(new CustomEvent('params-form', {
+            detail: paramConfig,
+            bubbles: true  // 让事件冒泡到 document
+        }));
+    });
+
+
+    // 表单提交处理
+    function get_from_data() {
+        // 获取表单元素
+        const formElement = document.getElementById('paramForm');
+        // 收集表单数据
+        const formData = new FormData(formElement);
+        const scheduleData = [];
+
+        // 处理计划表数据
+        const times = formData.getAll('schedule_time[]');
+        const weights = formData.getAll('schedule_weight[]');
+
+        for (let i = 0; i < times.length; i++) {
+            scheduleData.push([times[i], parseFloat(weights[i])]);
+        }
+
+        // 验证所有 weights 的总和必须为 1
+        const totalWeight = scheduleData.reduce((sum, item) => sum + item[1], 0);
+        const tolerance = 0.001;  // 容差，处理浮点数精度问题
+        if (Math.abs(totalWeight - 1) > tolerance) {
+            alert(`Weights must sum to 1. Current sum: ${totalWeight.toFixed(3)}`);
+            return null;
+        }
+
+        // 构建最终数据对象
+        const paramConfig = {
+            cash: parseInt(formData.get('cash')),
+            commission: parseFloat(formData.get('commission')),
+            begin_time: formData.get('begin_time'),
+            end_time: formData.get('end_time'),
+            schedule: scheduleData
+        };
+
+        return paramConfig;
+    }
+
+</script>
+INFO:     103.117.77.79:56623 - "GET /api/strategies HTTP/1.1" 200 OK
+INFO:     103.117.77.79:56624 - "GET /static/bootstrap.min.css.map HTTP/1.1" 404 Not Found
+<div class="form-container">
+    <form id="paramForm">
+        <!-- 现金输入 -->
+        <div class="form-group">
+            <label for="cash">cash:</label>
+            <input type="number" id="cash" name="cash" value="1000000" step="1000" required>
+        </div>
+
+        <!-- 佣金比例输入 -->
+        <div class="form-group">
+            <label for="commission">commission:</label>
+            <input type="number" id="commission" name="commission" value="0.002" step="0.001" min="0" max="1" required>
+        </div>
+
+        <!-- 开始时间输入 -->
+        <div class="form-group">
+            <label for="begin_time">begin_time:</label>
+            <input type="datetime-local" id="begin_time" name="begin_time" value="2025-01-01T16:00" required>
+        </div>
+
+        <!-- 结束时间输入 -->
+        <div class="form-group">
+            <label for="end_time">end_time:</label>
+            <input type="datetime-local" id="end_time" name="end_time" value="2025-01-02T16:00" required>
+        </div>
+
+        <!-- 计划表动态部分 -->
+        <div class="form-group">
+            <label>schedule:</label>
+            <div id="scheduleContainer">
+                <!-- 默认的计划项 -->
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="16:05" required>
+                    <input type="number" name="schedule_weight[]" value="0.333" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="20:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="00:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="04:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="08:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.083" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+                <div class="schedule-item">
+                    <input type="time" name="schedule_time[]" value="12:00" required>
+                    <input type="number" name="schedule_weight[]" value="0.333" step="0.001" min="0" max="1" required>
+                    <button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addScheduleItem()">add item</button>
+        </div>
+
+        <!-- <button type="submit" class="btn">提交配置</button> -->
+    </form>
+</div>
+
+<script>
+    // 添加新的计划项
+    function addScheduleItem() {
+        const container = document.getElementById('scheduleContainer');
+        const newItem = document.createElement('div');
+        newItem.className = 'schedule-item';
+        newItem.innerHTML = `
+			<input type="time" name="schedule_time[]" value="00:00" required>
+			<input type="number" name="schedule_weight[]" value="0.1" step="0.001" min="0" max="1" required>
+			<button type="button" class="remove-btn" onclick="removeScheduleItem(this)">delete</button>
+		`;
+        container.appendChild(newItem);
+    }
+
+    // 删除计划项
+    function removeScheduleItem(button) {
+        const container = document.getElementById('scheduleContainer');
+        if (container.children.length > 1) {
+            button.parentElement.remove();
+        } else {
+            alert('At least one schedule item must be kept');
+        }
+    }
+
+    // 表单提交处理
+    document.getElementById('paramForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // 收集表单数据
+        const formData = new FormData(this);
+        const scheduleData = [];
+
+        // 处理计划表数据
+        const times = formData.getAll('schedule_time[]');
+        const weights = formData.getAll('schedule_weight[]');
+
+        for (let i = 0; i < times.length; i++) {
+            scheduleData.push([times[i], parseFloat(weights[i])]);
+        }
+
+        // 验证所有 weights 的总和必须为 1
+        const totalWeight = scheduleData.reduce((sum, item) => sum + item[1], 0);
+        const tolerance = 0.001;  // 容差，处理浮点数精度问题
+        if (Math.abs(totalWeight - 1) > tolerance) {
+            alert(`Weights must sum to 1. Current sum: ${totalWeight.toFixed(3)}`);
+            return null;
+        }
+
+        // 构建最终数据对象
+        const paramConfig = {
+            cash: parseInt(formData.get('cash')),
+            commission: parseFloat(formData.get('commission')),
+            begin_time: formData.get('begin_time'),
+            end_time: formData.get('end_time'),
+            schedule: scheduleData
+        };
+
+        document.getElementById('paramForm').dispatchEvent(new CustomEvent('params-form', {
+            detail: paramConfig,
+            bubbles: true  // 让事件冒泡到 document
+        }));
+    });
+
+
+    // 表单提交处理
+    function get_from_data() {
+        // 获取表单元素
+        const formElement = document.getElementById('paramForm');
+        // 收集表单数据
+        const formData = new FormData(formElement);
+        const scheduleData = [];
+
+        // 处理计划表数据
+        const times = formData.getAll('schedule_time[]');
+        const weights = formData.getAll('schedule_weight[]');
+
+        for (let i = 0; i < times.length; i++) {
+            scheduleData.push([times[i], parseFloat(weights[i])]);
+        }
+
+        // 验证所有 weights 的总和必须为 1
+        const totalWeight = scheduleData.reduce((sum, item) => sum + item[1], 0);
+        const tolerance = 0.001;  // 容差，处理浮点数精度问题
+        if (Math.abs(totalWeight - 1) > tolerance) {
+            alert(`Weights must sum to 1. Current sum: ${totalWeight.toFixed(3)}`);
+            return null;
+        }
+
+        // 构建最终数据对象
+        const paramConfig = {
+            cash: parseInt(formData.get('cash')),
+            commission: parseFloat(formData.get('commission')),
+            begin_time: formData.get('begin_time'),
+            end_time: formData.get('end_time'),
+            schedule: scheduleData
+        };
+
+        return paramConfig;
+    }
+
+</script>
+INFO:     103.117.77.79:56623 - "GET /api/strategies/o_straddle_strategy/params HTTP/1.1" 200 OK
+INFO:     103.117.77.79:56629 - "GET /api/records?strategies_name=o_straddle_strategy HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 426, in app
+    raw_response = await run_endpoint_function(
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/home/clive/rongqf/backtest/server.py", line 58, in get_records
+    res = runner.load_all_results(strategies_name)
+  File "/home/clive/rongqf/backtest/core/backtest_engine.py", line 165, in load_all_results
+    data = json.load(f)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 10 column 17 (char 249)
+WARNING:  StatReload detected changes in 'core/backtest_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2020666]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2020951]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'Georgia', 'Impact', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10']
+INFO:     103.117.77.79:56846 - "GET /api/strategies/f_vol_sma/params HTTP/1.1" 200 OK
+[{'strategy_name': 'f_vol_sma', 'result_id': '20251123_124718', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-09-01', 'end_time': '2025-09-02', 'code': ''}, 'timestamp': '2025-11-23T12:47:18.678821', 'html_path': 'results/f_vol_sma/f_vol_sma_20251123_124718.html', 'json_path': 'results/f_vol_sma/f_vol_sma_20251123_124718.json', 'report_path': 'results/f_vol_sma/f_vol_sma_20251123_124718_report.html', 'pf_report_path': 'results/f_vol_sma/f_vol_sma_20251123_124718_pf_report.html'}, {'strategy_name': 'f_vol_sma', 'result_id': '20251123_124955', 'params': {'cash': '700000', 'commission': '0.002', 'begin_time': '2025-09-01', 'end_time': '2025-09-03', 'code': ''}, 'timestamp': '2025-11-23T12:49:55.281428', 'html_path': 'results/f_vol_sma/f_vol_sma_20251123_124955.html', 'json_path': 'results/f_vol_sma/f_vol_sma_20251123_124955.json', 'report_path': 'results/f_vol_sma/f_vol_sma_20251123_124955_report.html', 'pf_report_path': 'results/f_vol_sma/f_vol_sma_20251123_124955_pf_report.html'}]
+INFO:     103.117.77.79:56847 - "GET /api/records?strategies_name=f_vol_sma HTTP/1.1" 200 OK
+INFO:     103.117.77.79:56846 - "GET /api/records?strategies_name=o_straddle_strategy HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 426, in app
+    raw_response = await run_endpoint_function(
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/home/clive/rongqf/backtest/server.py", line 58, in get_records
+    res = runner.load_all_results(strategies_name)
+  File "/home/clive/rongqf/backtest/core/backtest_engine.py", line 165, in load_all_results
+    data = json.load(f)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 10 column 17 (char 249)
+INFO:     103.117.77.79:56847 - "GET /api/strategies/o_straddle_strategy/params HTTP/1.1" 200 OK
+INFO:     103.117.77.79:56873 - "GET /api/strategies/f_vol_sma/params HTTP/1.1" 200 OK
+[{'strategy_name': 'f_vol_sma', 'result_id': '20251123_124718', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-09-01', 'end_time': '2025-09-02', 'code': ''}, 'timestamp': '2025-11-23T12:47:18.678821', 'html_path': 'results/f_vol_sma/f_vol_sma_20251123_124718.html', 'json_path': 'results/f_vol_sma/f_vol_sma_20251123_124718.json', 'report_path': 'results/f_vol_sma/f_vol_sma_20251123_124718_report.html', 'pf_report_path': 'results/f_vol_sma/f_vol_sma_20251123_124718_pf_report.html'}, {'strategy_name': 'f_vol_sma', 'result_id': '20251123_124955', 'params': {'cash': '700000', 'commission': '0.002', 'begin_time': '2025-09-01', 'end_time': '2025-09-03', 'code': ''}, 'timestamp': '2025-11-23T12:49:55.281428', 'html_path': 'results/f_vol_sma/f_vol_sma_20251123_124955.html', 'json_path': 'results/f_vol_sma/f_vol_sma_20251123_124955.json', 'report_path': 'results/f_vol_sma/f_vol_sma_20251123_124955_report.html', 'pf_report_path': 'results/f_vol_sma/f_vol_sma_20251123_124955_pf_report.html'}]
+INFO:     103.117.77.79:56872 - "GET /api/records?strategies_name=f_vol_sma HTTP/1.1" 200 OK
+INFO:     103.117.77.79:56873 - "GET /api/records?strategies_name=o_straddle_strategy HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 426, in app
+    raw_response = await run_endpoint_function(
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/home/clive/rongqf/backtest/server.py", line 58, in get_records
+    res = runner.load_all_results(strategies_name)
+  File "/home/clive/rongqf/backtest/core/backtest_engine.py", line 165, in load_all_results
+    data = json.load(f)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 10 column 17 (char 249)
+INFO:     103.117.77.79:56872 - "GET /api/strategies/o_straddle_strategy/params HTTP/1.1" 200 OK
+INFO:     103.117.77.79:57002 - "GET /api/strategies/f_new_test/params HTTP/1.1" 200 OK
+[{'strategy_name': 'f_new_test', 'result_id': '20251202_123203', 'params': {'cash': '500000', 'commission': '0.002', 'begin_time': '2025-09-01', 'end_time': '2025-09-10', 'code': ''}, 'timestamp': '2025-12-02T12:32:03.546629', 'html_path': 'results/f_new_test/f_new_test_20251202_123203.html', 'json_path': 'results/f_new_test/f_new_test_20251202_123203.json', 'report_path': 'results/f_new_test/f_new_test_20251202_123203_report.html', 'pf_report_path': 'results/f_new_test/f_new_test_20251202_123203_pf_report.html'}]
+INFO:     103.117.77.79:57003 - "GET /api/records?strategies_name=f_new_test HTTP/1.1" 200 OK
+[{'strategy_name': 'o_straddle_strategy', 'result_id': '20260104_030950', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00', 'schedule_time[]': '12:00', 'schedule_weight[]': 0}, 'timestamp': '2026-01-04T03:09:50.313286', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20260104_035056', 'params': {'cash': 1000000, 'commission': 0.002, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00', 'schedule': [['16:05', 0.334], ['20:00', 0.083], ['00:00', 0.083], ['04:00', 0.083], ['08:00', 0.083], ['12:00', 0.334]]}, 'timestamp': '2026-01-04T03:50:56.871768', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20251230_150219', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00'}, 'timestamp': '2025-12-30T15:02:19.914989', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20260104_033809', 'params': {'cash': 1000000, 'commission': 0.002, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00', 'schedule': [['16:05', 0.333], ['20:00', 0.083], ['00:00', 0.083], ['04:00', 0.083], ['08:00', 0.083], ['12:00', 0.333]]}, 'timestamp': '2026-01-04T03:38:09.171171', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20251230_151622', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-12-30T16:00'}, 'timestamp': '2025-12-30T15:16:22.455753', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20251222_063558', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00'}, 'timestamp': '2025-12-22T06:35:58.632257', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558_pf_report.html'}]
+INFO:     103.117.77.79:57002 - "GET /api/records?strategies_name=o_straddle_strategy HTTP/1.1" 200 OK
+INFO:     103.117.77.79:57003 - "GET /api/strategies/o_straddle_strategy/params HTTP/1.1" 200 OK
+strategies.o_straddle_strategy
+['BaseModel', 'DATA_FOLDER', 'DataFeed', 'Field', 'HKT', 'INITIAL_CAPITAL', 'OStraddleStrategy', 'PandasData', 'PnLIndicator', 'SCHEDULE', 'SpotClockData', 'TARGET_END_HKT', 'TARGET_START_HKT', 'TradeMarker', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'backengine', 'bt', 'create_engine', 'dt', 'engine', 'get_required_filenames', 'load_and_merge_data', 'math', 'np', 'os', 'param', 'paramecfg', 'parametmp', 'pd', 'pytz', 'sys']
+OStraddleStrategy
+[[datetime.time(16, 5), 0.2], [datetime.time(20, 0), 0.1], [datetime.time(0, 0), 0.1], [datetime.time(4, 0), 0.1], [datetime.time(8, 0), 0.5]]
+2026-01-04 04:20:26,096 INFO sqlalchemy.engine.Engine select pg_catalog.version()
+2026-01-04 04:20:26,105 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:20:26,118 INFO sqlalchemy.engine.Engine select current_schema()
+2026-01-04 04:20:26,120 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:20:26,128 INFO sqlalchemy.engine.Engine show standard_conforming_strings
+2026-01-04 04:20:26,128 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:20:26,139 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-04 04:20:26,139 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-04 04:20:26,139 INFO sqlalchemy.engine.Engine [generated in 0.00092s] {'table_name': "\nselect date, underlyer_spot, expiration_date, claim_type, strike, best_ask_price, ask_iv, datetime from crypto_options_5m \nwhere datetime >= '2025-01-01 08:00:00+00:00' \nand datetime <= '2025-01-02 08:00:00+00:00' \nand exchange = 'binance'\nand underlyer = 'BTC_usd'\n        ", 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-01-04 04:20:26,168 INFO sqlalchemy.engine.Engine 
+select date, underlyer_spot, expiration_date, claim_type, strike, best_ask_price, ask_iv, datetime from crypto_options_5m 
+where datetime >= '2025-01-01 08:00:00+00:00' 
+and datetime <= '2025-01-02 08:00:00+00:00' 
+and exchange = 'binance'
+and underlyer = 'BTC_usd'
+        
+2026-01-04 04:20:26,168 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:22:30,355 INFO sqlalchemy.engine.Engine ROLLBACK
+[{'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-03-28T08:00:00+00:00', 'claim_type': 'put', 'strike': 90000.0, 'best_ask_price': 7625.0, 'ask_iv': 0.579, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'call', 'strike': 100000.0, 'best_ask_price': 20.0, 'ask_iv': 0.6589, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'put', 'strike': 100000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'call', 'strike': 102000.0, 'best_ask_price': 10.0, 'ask_iv': 0.74754, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'put', 'strike': 102000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 10:40:00'}]
+[{'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-01-17T08:00:00+00:00', 'claim_type': 'call', 'strike': 103000.0, 'best_ask_price': 1530.0, 'ask_iv': 0.57214, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'call', 'strike': 99000.0, 'best_ask_price': 40.0, 'ask_iv': 0.57643, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'put', 'strike': 99000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-01-31T08:00:00+00:00', 'claim_type': 'call', 'strike': 100000.0, 'best_ask_price': 4210.0, 'ask_iv': 0.59839, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-01-31T08:00:00+00:00', 'claim_type': 'put', 'strike': 100000.0, 'best_ask_price': 9535.0, 'ask_iv': 0.5835, 'datetime': '2025-01-01 08:00:00'}]
+[[datetime.time(16, 5), 0.2], [datetime.time(20, 0), 0.1], [datetime.time(0, 0), 0.1], [datetime.time(4, 0), 0.1], [datetime.time(8, 0), 0.5]]
+[{'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-01-17 08:00:00+0000', tz='UTC'), 'claim_type': 'call', 'strike': 103000.0, 'best_ask_price': 1530.0, 'ask_iv': 0.57214, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-01-02 08:00:00+0000', tz='UTC'), 'claim_type': 'call', 'strike': 99000.0, 'best_ask_price': 40.0, 'ask_iv': 0.57643, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-01-02 08:00:00+0000', tz='UTC'), 'claim_type': 'put', 'strike': 99000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-01-31 08:00:00+0000', tz='UTC'), 'claim_type': 'call', 'strike': 100000.0, 'best_ask_price': 4210.0, 'ask_iv': 0.59839, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-01-31 08:00:00+0000', tz='UTC'), 'claim_type': 'put', 'strike': 100000.0, 'best_ask_price': 9535.0, 'ask_iv': 0.5835, 'datetime': '2025-01-01 08:00:00'}]
+[EXECUTE] Strike 94000.0 | Size 0.0012
+[EXECUTE] Strike 93000.0 | Size 0.0005
+[EXECUTE] Strike 94000.0 | Size 0.0005
+[EXECUTE] Strike 95000.0 | Size 0.0006
+[EXECUTE] Strike 95000.0 | Size 0.0029
+[SETTLE] Strike 94000.0 | P/L: $-199,997.81
+[SETTLE] Strike 93000.0 | P/L: $-79,998.51
+[SETTLE] Strike 94000.0 | P/L: $-71,999.01
+[SETTLE] Strike 95000.0 | P/L: $-64,799.51
+[SETTLE] Strike 95000.0 | P/L: $-291,597.45
+✅ Output saved to straddle_output.csv
+[<strategies.o_straddle_strategy.OStraddleStrategy object at 0x7cf566f32850>]
+OrderedDict([('rtot', -1.2323458378377028), ('ravg', -0.6161729189188514), ('rnorm', -1.0), ('rnorm100', -100.0)])
+AutoOrderedDict([('len', 287), ('drawdown', 70.84), ('moneydown', 708400.0), ('max', AutoOrderedDict([('len', 287), ('drawdown', 70.84), ('moneydown', 708400.0)]))])
+OrderedDict([('sharperatio', None)])
+INFO:     103.117.77.79:57045 - "POST /api/backtest HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 426, in app
+    raw_response = await run_endpoint_function(
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/home/clive/rongqf/backtest/server.py", line 49, in run_backtest
+    result = runner.run_backtest(
+  File "/home/clive/rongqf/backtest/core/backtest_engine.py", line 78, in run_backtest
+    return bt_runer.run_backtest(strategy_name, StrategyClass, module, **params)
+  File "/home/clive/rongqf/backtest/core/backtrader_runer.py", line 93, in run_backtest
+    json.dump(result_data, f, indent=4)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/encoder.py", line 325, in _iterencode_list
+    yield from chunks
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/encoder.py", line 325, in _iterencode_list
+    yield from chunks
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/frozendict/__init__.py", line 32, in default
+    return BaseJsonEncoder.default(
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type time is not JSON serializable
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2020951]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2021826]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2021826]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2021870]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2021870]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2021908]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtesting_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2021908]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2022157]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtesting_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2022157]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2022209]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtesting_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2022209]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2022254]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'Georgia', 'Impact', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10']
+strategies.o_straddle_strategy
+['BaseModel', 'DATA_FOLDER', 'DataFeed', 'Field', 'HKT', 'INITIAL_CAPITAL', 'OStraddleStrategy', 'PandasData', 'PnLIndicator', 'SCHEDULE', 'SpotClockData', 'TARGET_END_HKT', 'TARGET_START_HKT', 'TradeMarker', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'backengine', 'bt', 'create_engine', 'dt', 'engine', 'get_required_filenames', 'load_and_merge_data', 'math', 'np', 'os', 'param', 'paramecfg', 'parametmp', 'pd', 'pytz', 'sys']
+OStraddleStrategy
+[[datetime.time(16, 5), 0.2], [datetime.time(20, 0), 0.1], [datetime.time(0, 0), 0.1], [datetime.time(4, 0), 0.1], [datetime.time(8, 0), 0.5]]
+2026-01-04 04:28:03,200 INFO sqlalchemy.engine.Engine select pg_catalog.version()
+2026-01-04 04:28:03,200 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:28:03,205 INFO sqlalchemy.engine.Engine select current_schema()
+2026-01-04 04:28:03,205 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:28:03,213 INFO sqlalchemy.engine.Engine show standard_conforming_strings
+2026-01-04 04:28:03,214 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:28:03,229 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-04 04:28:03,229 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-04 04:28:03,229 INFO sqlalchemy.engine.Engine [generated in 0.00067s] {'table_name': "\nselect date, underlyer_spot, expiration_date, claim_type, strike, best_ask_price, ask_iv, datetime from crypto_options_5m \nwhere datetime >= '2025-01-01 08:00:00+00:00' \nand datetime <= '2025-01-02 08:00:00+00:00' \nand exchange = 'binance'\nand underlyer = 'BTC_usd'\n        ", 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-01-04 04:28:03,255 INFO sqlalchemy.engine.Engine 
+select date, underlyer_spot, expiration_date, claim_type, strike, best_ask_price, ask_iv, datetime from crypto_options_5m 
+where datetime >= '2025-01-01 08:00:00+00:00' 
+and datetime <= '2025-01-02 08:00:00+00:00' 
+and exchange = 'binance'
+and underlyer = 'BTC_usd'
+        
+2026-01-04 04:28:03,255 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-04 04:29:44,659 INFO sqlalchemy.engine.Engine ROLLBACK
+[{'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-03-28T08:00:00+00:00', 'claim_type': 'put', 'strike': 90000.0, 'best_ask_price': 7625.0, 'ask_iv': 0.579, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'call', 'strike': 100000.0, 'best_ask_price': 20.0, 'ask_iv': 0.6589, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'put', 'strike': 100000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'call', 'strike': 102000.0, 'best_ask_price': 10.0, 'ask_iv': 0.74754, 'datetime': '2025-01-01 10:40:00'}, {'date': 1735728000000, 'underlyer_spot': 93361.41, 'expiration_date': '2025-01-02T08:00:00+00:00', 'claim_type': 'put', 'strike': 102000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 10:40:00'}]
+[{'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-01-03T08:00:00+00:00', 'claim_type': 'put', 'strike': 80000.0, 'best_ask_price': 50.0, 'ask_iv': 1.04662, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-03-28T08:00:00+00:00', 'claim_type': 'call', 'strike': 100000.0, 'best_ask_price': 9735.0, 'ask_iv': 0.6292, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-03-28T08:00:00+00:00', 'claim_type': 'put', 'strike': 100000.0, 'best_ask_price': 12980.0, 'ask_iv': 0.58927, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-03-28T08:00:00+00:00', 'claim_type': 'call', 'strike': 110000.0, 'best_ask_price': 6600.0, 'ask_iv': 0.63318, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': '2025-03-28T08:00:00+00:00', 'claim_type': 'put', 'strike': 110000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 08:00:00'}]
+[[datetime.time(16, 5), 0.2], [datetime.time(20, 0), 0.1], [datetime.time(0, 0), 0.1], [datetime.time(4, 0), 0.1], [datetime.time(8, 0), 0.5]]
+[{'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-01-03 08:00:00+0000', tz='UTC'), 'claim_type': 'put', 'strike': 80000.0, 'best_ask_price': 50.0, 'ask_iv': 1.04662, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-03-28 08:00:00+0000', tz='UTC'), 'claim_type': 'call', 'strike': 100000.0, 'best_ask_price': 9735.0, 'ask_iv': 0.6292, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-03-28 08:00:00+0000', tz='UTC'), 'claim_type': 'put', 'strike': 100000.0, 'best_ask_price': 12980.0, 'ask_iv': 0.58927, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-03-28 08:00:00+0000', tz='UTC'), 'claim_type': 'call', 'strike': 110000.0, 'best_ask_price': 6600.0, 'ask_iv': 0.63318, 'datetime': '2025-01-01 08:00:00'}, {'date': 1735718400000, 'underlyer_spot': 93701.88, 'expiration_date': Timestamp('2025-03-28 08:00:00+0000', tz='UTC'), 'claim_type': 'put', 'strike': 110000.0, 'best_ask_price': 0.0, 'ask_iv': -1e-08, 'datetime': '2025-01-01 08:00:00'}]
+[EXECUTE] Strike 94000.0 | Size 0.0012
+[EXECUTE] Strike 93000.0 | Size 0.0005
+[EXECUTE] Strike 94000.0 | Size 0.0005
+[EXECUTE] Strike 95000.0 | Size 0.0006
+[EXECUTE] Strike 95000.0 | Size 0.0029
+[SETTLE] Strike 94000.0 | P/L: $-199,997.81
+[SETTLE] Strike 93000.0 | P/L: $-79,998.51
+[SETTLE] Strike 94000.0 | P/L: $-71,999.01
+[SETTLE] Strike 95000.0 | P/L: $-64,799.51
+[SETTLE] Strike 95000.0 | P/L: $-291,597.45
+✅ Output saved to straddle_output.csv
+[<strategies.o_straddle_strategy.OStraddleStrategy object at 0x7523f867cbe0>]
+OrderedDict([('rtot', -1.2323458378377028), ('ravg', -0.6161729189188514), ('rnorm', -1.0), ('rnorm100', -100.0)])
+AutoOrderedDict([('len', 287), ('drawdown', 70.84), ('moneydown', 708400.0), ('max', AutoOrderedDict([('len', 287), ('drawdown', 70.84), ('moneydown', 708400.0)]))])
+OrderedDict([('sharperatio', None)])
+INFO:     103.117.77.79:57661 - "POST /api/backtest HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 426, in app
+    raw_response = await run_endpoint_function(
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/fastapi/routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/home/clive/rongqf/backtest/server.py", line 49, in run_backtest
+    result = runner.run_backtest(
+  File "/home/clive/rongqf/backtest/core/backtest_engine.py", line 78, in run_backtest
+    return bt_runer.run_backtest(strategy_name, StrategyClass, module, **params)
+  File "/home/clive/rongqf/backtest/core/backtrader_runer.py", line 123, in run_backtest
+    cerebro.plot(b)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/backtrader/cerebro.py", line 1001, in plot
+    plotter.show()
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/backtrader_plotting/bokeh/bokeh.py", line 534, in show
+    model = self.generate_model(idx)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/backtrader_plotting/bokeh/bokeh.py", line 371, in generate_model
+    meta = Div(text=metadata.get_metadata_div(figurepage.strategy, self.p.scheme.strategysrc))
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/backtrader_plotting/html/metadata.py", line 100, in get_metadata_div
+    md += _get_strategy(strategy, include_src)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/backtrader_plotting/html/metadata.py", line 60, in _get_strategy
+    md += _get_parameter_table(strategy.params)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/backtrader_plotting/html/metadata.py", line 19, in _get_parameter_table
+    params[k] = paramval2str(k, v)
+  File "/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/backtrader_plotting/utils.py", line 27, in paramval2str
+    return ','.join(value)
+TypeError: sequence item 0: expected str instance, list found
+INFO:     103.117.77.79:57665 - "GET / HTTP/1.1" 200 OK
+INFO:     103.117.77.79:57665 - "GET /static/bootstrap.min.css HTTP/1.1" 200 OK
+INFO:     103.117.77.79:57665 - "GET /static/bootstrap.min.css.map HTTP/1.1" 404 Not Found
+INFO:     103.117.77.79:57809 - "GET /api/strategies HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2022254]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2022638]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2022638]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2022747]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2022747]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2022802]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'core/backtrader_runer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2022802]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2022896]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'Georgia', 'Impact', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10']
+INFO:     64.227.92.66:45350 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     205.210.31.172:65138 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     172.236.228.111:46404 - "GET / HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2022896]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2029311]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'Georgia', 'Impact', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10']
+INFO:     204.76.203.93:59638 - "GET http%3A//httpbin.org/ip HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2029311]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2032255]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2032255]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2032785]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2032785]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2033762]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2033762]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2033827]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2033827]
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2033936]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2033983]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+可用字体: ['Andale Mono', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'DejaVu Sans', 'DejaVu Sans Display', 'DejaVu Sans Mono', 'DejaVu Serif', 'DejaVu Serif Display', 'Georgia', 'Impact', 'Liberation Mono', 'Liberation Sans', 'Liberation Sans Narrow', 'Liberation Serif', 'STIXGeneral', 'STIXNonUnicode', 'STIXSizeFiveSym', 'STIXSizeFourSym', 'STIXSizeOneSym', 'STIXSizeThreeSym', 'STIXSizeTwoSym', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Webdings', 'cmb10', 'cmex10', 'cmmi10', 'cmr10', 'cmss10', 'cmsy10', 'cmtt10']
+INFO:     103.117.77.79:49201 - "GET /api/strategies/o_straddle_strategy/params HTTP/1.1" 200 OK
+[{'strategy_name': 'o_straddle_strategy', 'result_id': '20260104_030950', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00', 'schedule_time[]': '12:00', 'schedule_weight[]': 0}, 'timestamp': '2026-01-04T03:09:50.313286', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_030950_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20260104_035056', 'params': {'cash': 1000000, 'commission': 0.002, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00', 'schedule': [['16:05', 0.334], ['20:00', 0.083], ['00:00', 0.083], ['04:00', 0.083], ['08:00', 0.083], ['12:00', 0.334]]}, 'timestamp': '2026-01-04T03:50:56.871768', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_035056_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20251230_150219', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00'}, 'timestamp': '2025-12-30T15:02:19.914989', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_150219_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20260104_033809', 'params': {'cash': 1000000, 'commission': 0.002, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00', 'schedule': [['16:05', 0.333], ['20:00', 0.083], ['00:00', 0.083], ['04:00', 0.083], ['08:00', 0.083], ['12:00', 0.333]]}, 'timestamp': '2026-01-04T03:38:09.171171', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_033809_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20260104_042946', 'params': {'cash': 1000000, 'commission': 0.002, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00', 'schedule': [['16:05:00', 0.2], ['20:00:00', 0.1], ['00:00:00', 0.1], ['04:00:00', 0.1], ['08:00:00', 0.5]]}, 'timestamp': '2026-01-04T04:29:46.624743', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_042946.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_042946.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_042946_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20260104_042946_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20251230_151622', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-12-30T16:00'}, 'timestamp': '2025-12-30T15:16:22.455753', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251230_151622_pf_report.html'}, {'strategy_name': 'o_straddle_strategy', 'result_id': '20251222_063558', 'params': {'cash': 1000000, 'commission': 0, 'begin_time': '2025-01-01T16:00', 'end_time': '2025-01-02T16:00'}, 'timestamp': '2025-12-22T06:35:58.632257', 'html_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558.html', 'json_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558.json', 'report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558_report.html', 'pf_report_path': 'results/o_straddle_strategy/o_straddle_strategy_20251222_063558_pf_report.html'}]
+INFO:     103.117.77.79:49200 - "GET /api/records?strategies_name=o_straddle_strategy HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2033983]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2034435]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.

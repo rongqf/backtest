@@ -154,9 +154,9 @@ class OStraddleStrategy(bt.Strategy):
     def __init__(self):
         self.df = self.p.df_market
         self.spot = self.datas[0]
-        self.schedule = self.p.schedule or SCHEDULE
-        
+        self.schedule = SCHEDULE
         print(self.schedule)
+        
         
         print(self.df.head().to_dict('records'))
         
@@ -304,14 +304,15 @@ class DataFeed:
             time_object = datetime_object.time()
             x[0] = time_object
         print(sch)
-        self.schedule = sch
+        global SCHEDULE 
+        SCHEDULE = sch
+        
 
         self.get_date_db()
 
     def get_strategy_params(self):
         return {
             'df_market': self.df,
-            'schedule': self.schedule,
         }
 
     def get_date_db(self):
@@ -388,12 +389,12 @@ if __name__ == "__main__":
         'begin_time': '2025-01-13 16:05:00', 
         'end_time': '2025-01-14 16:00:00',
         'schedule': [
-            ['16:05', 0.333], 
-            ['20:00', 0.083], 
-            ['00:00', 0.083], 
-            ['04:00', 0.083], 
-            ['08:00', 0.083], 
-            ['12:00', 0.333]
+            ['16:05', 0.1], 
+            ['20:00', 0.1], 
+            ['00:00', 0.1], 
+            ['04:00', 0.1], 
+            ['08:00', 0.3], 
+            ['12:00', 0.3]
         ]
     })
     params = datafeed.get_strategy_params()
@@ -432,7 +433,7 @@ if __name__ == "__main__":
         volup='red',       # 上涨日的成交量设置为红色
         voldown='red'    # 下跌日的成交量设置为绿色
     )
-    #cerebro.plot(b)
+    cerebro.plot(b)
     # # scheme = PlotScheme(decimal_places=5, max_legend_text_width=16)
     # # # scheme.voloverlay = False
     # # figs = cerebro.plot(BacktraderPlotly(show=False, scheme=scheme))

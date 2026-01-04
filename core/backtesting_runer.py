@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, time, date
 import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif'] = ['DejaVu Sans']  # 开源字体，兼容性好
 plt.rcParams['axes.unicode_minus'] = False
@@ -8,6 +8,17 @@ plt.rcParams['axes.unicode_minus'] = False
 import matplotlib.font_manager as fm
 fonts = sorted(set([f.name for f in fm.fontManager.ttflist]))
 print("可用字体:", fonts)
+
+# Custom JSON encoder for datetime objects
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        elif isinstance(obj, date):
+            return obj.isoformat()
+        elif isinstance(obj, time):
+            return obj.isoformat()
+        return super().default(obj)
 
 from backtesting import Backtest
 import quantstats as qs
@@ -50,10 +61,10 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     
     dir = f"results/{strategy_name}"
     os.makedirs(dir, exist_ok=True)
-    
+
     json_path = f"results/{strategy_name}/{result_id}.json"
     with open(json_path, "w") as f:
-        json.dump(result_data, f, indent=4)
+        json.dump(result_data, f, indent=4, cls=DateTimeEncoder)
         # f.write(stats.to_json(indent=4))
     
     # 生成HTML报告

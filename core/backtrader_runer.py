@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, time, date
 import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif'] = ['DejaVu Sans']  # 开源字体，兼容性好
 plt.rcParams['axes.unicode_minus'] = False
@@ -23,6 +23,42 @@ if not hasattr(np, 'bool8'):
 
 from backtrader_plotting import Bokeh
 from backtrader_plotting.schemes import Tradimo
+
+# Custom JSON encoder for datetime objects
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        elif isinstance(obj, date):
+            return obj.isoformat()
+        elif isinstance(obj, time):
+            return obj.isoformat()
+        return super().default(obj)
+
+# Helper function to convert datetime objects in strategy params to strings for plotting
+def convert_params_for_plotting(params):
+    """Convert datetime.time objects to strings for backtrader_plotting compatibility"""
+    converted_params = {}
+    for key, value in params.items():
+        if key == 'schedule' and isinstance(value, list):
+            # Convert schedule list of tuples to string representation
+            converted_schedule = []
+            for item in value:
+                if isinstance(item, (list, tuple)) and len(item) >= 2:
+                    time_obj = item[0]
+                    weight = item[1]
+                    if isinstance(time_obj, time):
+                        converted_schedule.append((time_obj.isoformat(), weight))
+                    else:
+                        converted_schedule.append((time_obj, weight))
+                else:
+                    converted_schedule.append(item)
+            converted_params[key] = converted_schedule
+        elif isinstance(value, time):
+            converted_params[key] = value.isoformat()
+        else:
+            converted_params[key] = value
+    return converted_params
 
 def get_quote_data(**params):
     return pd.DataFrame([])
@@ -61,8 +97,33 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     # 执行回测
     thestrats = cerebro.run()
 
-    
-    
+    # Convert datetime.time objects in strategy params to strings for plotting compatibility
+    def prepare_strategy_for_plotting(strategy):
+        """Prepare strategy parameters for backtrader_plotting by converting datetime objects to strings"""
+        if hasattr(strategy, 'params'):
+            params_obj = strategy.params
+            for key in list(params_obj._getitems()):
+                value = getattr(params_obj, key)
+                if key == 'schedule' and isinstance(value, list):
+                    # Convert schedule list containing tuples
+                    converted_list = []
+                    for item in value:
+                        if isinstance(item, (list, tuple)) and len(item) >= 2:
+                            time_obj, weight = item[0], item[1]
+                            if isinstance(time_obj, time):
+                                converted_list.append((time_obj.isoformat(), weight))
+                            else:
+                                converted_list.append((time_obj, weight))
+                        else:
+                            converted_list.append(item)
+                    params_obj._items[key] = converted_list
+                elif isinstance(value, time):
+                    params_obj._items[key] = value.isoformat()
+
+    # Prepare strategy for plotting
+    for strategy in thestrats:
+        prepare_strategy_for_plotting(strategy)
+
     print(thestrats)
     # 获取分析结果
     thestrat = thestrats[0]
@@ -87,10 +148,10 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     
     dir = f"results/{strategy_name}"
     os.makedirs(dir, exist_ok=True)
-    
+
     json_path = f"results/{strategy_name}/{result_id}.json"
     with open(json_path, "w") as f:
-        json.dump(result_data, f, indent=4)
+        json.dump(result_data, f, indent=4, cls=DateTimeEncoder)
         
         # 生成HTML报告
     html_path = f"results/{strategy_name}/{result_id}_report.html"
@@ -109,7 +170,14 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
         volup='red',       # 上涨日的成交量设置为红色
         voldown='red'    # 下跌日的成交量设置为绿色
     )
-    cerebro.plot(b)
+    try:
+        cerebro.plot(b)
+    except Exception as e:
+        print(f"Warning: Plotting failed with error: {e}")
+        print("Skipping plot generation, but backtest results are still saved.")
+        # Create an empty HTML file as placeholder
+        with open(html_path, 'w') as f:
+            f.write('<html><body><h1>Plotting failed</h1><p>Plot generation failed due to incompatible parameters.</p><p>Backtest results are saved successfully.</p></body></html>')
     
      
     pf_rp_path = f"results/{strategy_name}/{result_id}_pf_report.html"

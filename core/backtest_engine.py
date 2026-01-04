@@ -198,7 +198,7 @@ class StrategyRunner:
         if params:
             if callable(params):
                 params = params()
-            print(params)
+            #print(params)
             return params
         else:
             params = getattr(module, 'paramecfg')
