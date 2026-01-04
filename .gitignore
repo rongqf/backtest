@@ -68,3 +68,5 @@ nosetests.xml
 results/
 
 *.log
+# Log files
+*.log

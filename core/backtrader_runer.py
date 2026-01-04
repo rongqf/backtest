@@ -97,33 +97,6 @@ def run_backtest(strategy_name: str, StrategyClass, module, **params):
     # 执行回测
     thestrats = cerebro.run()
 
-    # Convert datetime.time objects in strategy params to strings for plotting compatibility
-    def prepare_strategy_for_plotting(strategy):
-        """Prepare strategy parameters for backtrader_plotting by converting datetime objects to strings"""
-        if hasattr(strategy, 'params'):
-            params_obj = strategy.params
-            for key in list(params_obj._getitems()):
-                value = getattr(params_obj, key)
-                if key == 'schedule' and isinstance(value, list):
-                    # Convert schedule list containing tuples
-                    converted_list = []
-                    for item in value:
-                        if isinstance(item, (list, tuple)) and len(item) >= 2:
-                            time_obj, weight = item[0], item[1]
-                            if isinstance(time_obj, time):
-                                converted_list.append((time_obj.isoformat(), weight))
-                            else:
-                                converted_list.append((time_obj, weight))
-                        else:
-                            converted_list.append(item)
-                    params_obj._items[key] = converted_list
-                elif isinstance(value, time):
-                    params_obj._items[key] = value.isoformat()
-
-    # Prepare strategy for plotting
-    for strategy in thestrats:
-        prepare_strategy_for_plotting(strategy)
-
     print(thestrats)
     # 获取分析结果
     thestrat = thestrats[0]
