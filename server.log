@@ -965,3 +965,23 @@ INFO:     Finished server process [2033983]
 INFO:     Started server process [2034435]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2034435]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2036203]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'strategies/o_straddle_strategy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2036203]
+/home/clive/miniconda/envs/bt_env/lib/python3.9/site-packages/pyfolio/pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+  warnings.warn(
+INFO:     Started server process [2036236]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

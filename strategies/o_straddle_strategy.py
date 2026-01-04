@@ -283,8 +283,9 @@ class OStraddleStrategy(bt.Strategy):
 
     def stop(self):
         if self.trade_log:
-            pd.DataFrame(self.trade_log).to_csv('straddle_output.csv', index=False)
-            print("✅ Output saved to straddle_output.csv")
+            pass
+            # pd.DataFrame(self.trade_log).to_csv('straddle_output.csv', index=False)
+            # print("✅ Output saved to straddle_output.csv")
 
 
 class SpotClockData(bt.feeds.PandasData):
